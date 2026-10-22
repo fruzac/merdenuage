@@ -37,7 +37,9 @@ SUMMITS = [
 
 MODELS = ["meteofrance_arome_france", "icon_d2"]
 MODEL_LABEL = {"meteofrance_arome_france": "AROME", "icon_d2": "ICON-D2"}
-LEVELS = [1000, 975, 950, 925, 900, 875, 850, 825, 800, 775, 750, 700]
+# 775, 825 et 875 hPa : absents d'Open-Meteo pour les deux modeles.
+# 975 : ICON-D2 seulement. 750 : AROME seulement.
+LEVELS = [1000, 975, 950, 925, 900, 850, 800, 750, 700]
 
 SAT_RH = 93    # couche nuageuse
 DRY_RH = 80    # air sec au dessus
