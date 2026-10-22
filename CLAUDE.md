@@ -35,7 +35,7 @@ La Bastille a été écartée (trop basse). Il a aussi mentionné la Chartreuse 
 
 - Open-Meteo, modèles `meteofrance_arome_france` et `icon_d2`, niveaux 1000 à 700 hPa (température, humidité, géopotentiel, vent), nuages bas, moyens, hauts, à l'heure du lever.
 - Ne pas utiliser `cloud_cover_low` seul : il couvre tout jusqu'à 3 km, donc mélange la mer et le sommet.
-- Sommet de couche : dernier niveau avec humidité au moins 93 % suivi d'un niveau plus sec.
+- Sommet de couche : dernier niveau avec humidité au moins 93 % suivi d'un niveau plus sec, en partant de la première couche saturée. Retenue seulement si sa base est à moins de 900 m au dessus du fond de vallée et si les nuages bas dépassent 20 % (sinon ce sont les nuages moyens d'un front, pas une mer : bug corrigé le 22/10 où la page affichait tous les sommets noyés). Saturée jusqu'au dernier niveau : `deep`, couche épaisse.
 - Indice mer = couche basse × sommet de couche sous le sommet visé × air sec au sommet × inversion × vent, puis 25 % de persistance (veille à 17h).
 - Indice final = mer pondérée par le ciel (nuages moyens et hauts).
 - Ce n'est pas une probabilité calibrée. `docs/history.json` garde les prévisions pour calibrer plus tard avec les observations réelles (webcams, sorties).
