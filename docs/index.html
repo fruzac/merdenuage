@@ -150,6 +150,13 @@ function dayRows(date) {
   }).filter(Boolean);
 }
 
+// couverture de nuages moyens et hauts au dessus des sommets (ce qui cache le lever)
+function coverAbove(r) {
+  if (r.d.mid != null) return Math.max(r.d.mid, r.d.high ?? 0);
+  const m = Object.values(r.d.models || {}).filter(Boolean);
+  return m.length ? Math.round(Math.max(avg(m.map(x => x.mid)), avg(m.map(x => x.high)))) : 0;
+}
+
 function renderTabs() {
   $('#tabs').innerHTML = DATA.days.map((iso, i) =>
     `<button type="button" aria-pressed="${i === dayIdx}" data-i="${i}">${relDay(iso)}</button>`).join('');
@@ -202,7 +209,8 @@ function renderMap(rows) {
   const vals = [...new Set(Object.values(tops).filter(v => v != null))].sort((a, b) => a - b);
   const src = DEM ? 'relief Copernicus' : 'relief non chargé';
   let txt;
-  if (!vals.length) txt = 'pas de couche basse prévue au lever';
+  const covered = rows.some(r => coverAbove(r) >= 70);
+  if (!vals.length) txt = 'pas de mer de nuages prévue au lever' + (covered ? ', ciel couvert au dessus' : '');
   else if (vals[0] > 2500) txt = 'couche épaisse au lever : sommets dans les nuages';
   else txt = `<span class="swatch"></span>nuages au lever : ${vals.map(v => v + ' m').join(', ')}`;
   $('#legend').innerHTML = `<span>${txt}</span><span>${src}</span>`;
@@ -342,6 +350,7 @@ function renderChart(rows) {
     }
   });
   if (line.length) svg += polyline(line);
+  if (list.every(r => r.top == null)) svg += `<rect x="${W / 2 - 118}" y="${B - 24}" width="236" height="18" fill="#FBFBF8" opacity=".92"/><text x="${W / 2}" y="${B - 11}" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10" fill="#6A717A" text-anchor="middle">pas de mer de nuages prévue au lever</text>`;
   svg += bandLabels;
   // étiquettes
   list.forEach((r, i) => {
@@ -373,7 +382,9 @@ function renderPeaks(rows) {
     const gmax = Math.max(2500, Math.ceil(Math.max(r.s.alt, Math.min(r.top ?? 0, 4000)) / 500) * 500);
     const pct = z => Math.min(100, z / gmax * 100).toFixed(1) + '%';
     let txt;
-    if (r.top == null) txt = `pas de couche basse prévue · sommet à ${r.s.alt} m`;
+    const cov = coverAbove(r);
+    if (r.top == null) txt = `pas de mer de nuages prévue${cov >= 70 ? ` · ciel couvert au dessus (${cov} %)` : ''}`;
+    else if (r.d.deep) txt = `couche épaisse, au moins jusqu'à ${r.top} m · <span style="color:#B42318">sommet dans les nuages</span>`;
     else if (r.marge > 0) txt = `couche jusqu'à ${r.top} m · sommet à ${r.s.alt} m · marge <span style="color:${r.marge < 150 ? '#B42318' : '#1F2328'}">+${r.marge} m</span>`;
     else txt = `couche jusqu'à ${r.top} m · <span style="color:#B42318">sommet dans les nuages</span>`;
     const models = Object.entries(r.d.models || {}).filter(([, m]) => m);
@@ -427,7 +438,7 @@ Promise.all([
   if (!data || !data.days || !data.days.length) { $('#meta').textContent = 'données indisponibles'; return; }
   DATA = data; DEM = dem;
   const g = new Date(data.generated);
-  $('#meta').textContent = `mis à jour ${g.toLocaleDateString('fr-FR', { weekday: 'short' })} ${g.getHours()}h${String(g.getMinutes()).padStart(2, '0')}`;
+  $('#meta').textContent = `prévision au lever · màj ${g.toLocaleDateString('fr-FR', { weekday: 'short' })} ${g.getHours()}h${String(g.getMinutes()).padStart(2, '0')}`;
   render();
   let t;
   window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(() => renderMap(dayRows(DATA.days[dayIdx])), 150); });

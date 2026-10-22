@@ -50,6 +50,7 @@ MODEL_LABEL = {"meteofrance_arome_france": "AROME", "icon_d2": "ICON-D2"}
 LEVELS = [1000, 975, 950, 925, 900, 850, 800, 750, 700]
 
 SAT_RH = 93    # couche nuageuse
+BASE_MAX = 900  # base de la couche au plus a 900 m au dessus du fond de vallee
 DRY_RH = 80    # air sec au dessus
 
 
@@ -111,23 +112,29 @@ def interp(col, z, k):
     return pts[-1][1]
 
 
-def cloud_top(col, ground):
-    """Sommet de la couche saturee la plus basse (m), ou None."""
-    above = [c for c in col if c[0] > ground + 30 and c[0] < 3200]
-    top = None
-    for j, (z, t, rh, w) in enumerate(above):
-        if rh >= SAT_RH:
-            nxt = above[j + 1] if j + 1 < len(above) else None
-            if nxt is None:
-                return z
-            if nxt[2] < SAT_RH:
-                # limite entre le dernier niveau sature et le suivant
-                frac = clamp((rh - SAT_RH) / max(rh - nxt[2], 1))
-                return z + (nxt[0] - z) * frac
-            top = nxt[0]
-        elif top is not None:
-            return top
-    return top
+def cloud_top(col, ground, low):
+    """Sommet de la couche nuageuse basse partie du fond de vallee.
+
+    Renvoie (sommet en m, epaisse) ou (None, False).
+    Une couche saturee qui commence haut (nuages moyens d'un front) n'est pas
+    une mer de nuages : on l'ignore. Une couche saturee jusqu'au dernier niveau
+    est marquee epaisse (les sommets sont dedans).
+    """
+    if low is None or low < 20:
+        return None, False
+    above = [c for c in col if ground + 30 < c[0] < 3200]
+    first = next((j for j, c in enumerate(above) if c[2] >= SAT_RH), None)
+    if first is None or above[first][0] > ground + BASE_MAX:
+        return None, False
+    j = first
+    while j + 1 < len(above) and above[j + 1][2] >= SAT_RH:
+        j += 1
+    if j + 1 == len(above):
+        return above[j][0], True
+    z, rh = above[j][0], above[j][2]
+    nz, nrh = above[j + 1][0], above[j + 1][2]
+    frac = clamp((rh - SAT_RH) / max(rh - nrh, 1))
+    return z + (nz - z) * frac, False
 
 
 def score_one(h, model, i, summit, ground):
@@ -140,7 +147,7 @@ def score_one(h, model, i, summit, ground):
     high = at(series(h, "cloud_cover_high", model), i) or 0
     t2 = at(series(h, "temperature_2m", model), i)
 
-    top = cloud_top(col, ground)
+    top, deep = cloud_top(col, ground, low)
     rh_sum = interp(col, Z + 50, 2)
     t_sum = interp(col, Z, 1)
     wind = interp(col, Z, 3) or 0
@@ -173,6 +180,7 @@ def score_one(h, model, i, summit, ground):
         "sea": round(100 * clamp(sea ** 0.75)),
         "sky": round(100 * s_sky),
         "top": None if top is None else round(top),
+        "deep": deep,
         "low": round(low), "mid": round(mid), "high": round(high),
         "rh_summit": None if rh_sum is None else round(rh_sum),
         "inversion": None if inv is None else round(inv, 1),
@@ -212,10 +220,14 @@ def combine(per_model, persist):
         sea = 0.75 * sea + 0.25 * (sum(p) / len(p))
     worth = sea * (0.45 + 0.55 * sky / 100)
     tops = [m["top"] for m in vals if m["top"] is not None]
+    with_top = [m for m in vals if m["top"] is not None]
     return {
         "sea": round(sea), "sky": round(sky), "worth": round(worth),
         "agreement": round(100 - spread),
         "top": round(sum(tops) / len(tops)) if tops else None,
+        "deep": bool(with_top) and all(m.get("deep") for m in with_top),
+        "mid": round(sum(m["mid"] for m in vals) / len(vals)),
+        "high": round(sum(m["high"] for m in vals) / len(vals)),
         "persist": round(sum(p) / len(p)) if p else None,
     }
 
