@@ -1,0 +1,39 @@
+name: Prévision mer de nuages
+
+on:
+  schedule:
+    # heures UTC : 5h, 15h et 19h UTC (7h, 17h et 21h à Paris en été, 6h, 16h, 20h en hiver)
+    - cron: "7 5 * * *"
+    - cron: "7 15 * * *"
+    - cron: "7 19 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: forecast
+  cancel-in-progress: false
+
+jobs:
+  forecast:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Calcul de l'indice
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          NOTIFY_THRESHOLD: "80"
+        run: |
+          # la notif ne part qu'au passage du soir, une seule fois par date
+          if [ "$(date -u +%H)" -ge 18 ]; then python scripts/forecast.py --notify; else python scripts/forecast.py; fi
+      - name: Publication
+        run: |
+          git config user.name "merdenuages-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add docs/data.json docs/history.json docs/notified.json 2>/dev/null || true
+          git diff --cached --quiet || git commit -m "Prévision $(date -u +%Y-%m-%dT%H:%MZ)"
+          git push

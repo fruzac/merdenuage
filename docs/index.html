@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+</head>
+<body>
+<title>Mer de nuages Grenoble</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout : une colonne façon carnet de terrain, verdict en tête, puis un panneau de balisage par sommet avec sa coupe verticale. */
+:root{
+  --bg:#EEF1F4; --panel:#FFFFFF; --ink:#1C2733; --muted:#5D6B78; --line:#D5DCE3;
+  --fog:#C9D3DD; --fog-ink:#7F8E9C; --sign:#F2C230; --sign-ink:#1C1A12;
+  --dawn:#D9733F; --good:#2F7D5B; --mid:#B9861E; --bad:#9AA6B1;
+  --f-sign:"Barlow Condensed","Arial Narrow",sans-serif;
+  --f-body:"Atkinson Hyperlegible",system-ui,sans-serif;
+  --f-data:"IBM Plex Mono",ui-monospace,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0F1720; --panel:#17212C; --ink:#E6ECF1; --muted:#93A2B0; --line:#26323F;
+  --fog:#3A4856; --fog-ink:#8C9BA9; --sign:#E8B92C; --sign-ink:#17140A;
+  --dawn:#F08A55; --good:#5BB88C; --mid:#D7A643; --bad:#5E6B78; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1720; --panel:#17212C; --ink:#E6ECF1; --muted:#93A2B0; --line:#26323F;
+  --fog:#3A4856; --fog-ink:#8C9BA9; --sign:#E8B92C; --sign-ink:#17140A;
+  --dawn:#F08A55; --good:#5BB88C; --mid:#D7A643; --bad:#5E6B78; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 var(--f-body);margin:0}
+.wrap{max-width:720px;margin:0 auto;padding-block:28px 48px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:flex;flex-direction:column;gap:28px}
+header{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+h1{font:700 1.9rem/1 var(--f-sign);letter-spacing:.02em;text-transform:uppercase;margin:0}
+.meta{font:500 .8rem var(--f-data);color:var(--muted)}
+.badge{font:500 .72rem var(--f-data);color:var(--dawn);border:1px solid currentColor;border-radius:4px;padding:2px 6px;margin-left:8px;text-transform:uppercase;letter-spacing:.06em}
+
+.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.tabs button{font:600 1rem var(--f-sign);letter-spacing:.04em;text-transform:uppercase;background:transparent;color:var(--muted);
+  border:1px solid var(--line);border-radius:6px;padding:6px 14px;cursor:pointer}
+.tabs button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tabs button:focus-visible,summary:focus-visible{outline:2px solid var(--dawn);outline-offset:2px}
+
+.verdict{display:grid;grid-template-columns:auto 1fr;gap:6px 20px;align-items:center}
+.big{font:700 5.5rem/0.85 var(--f-sign);font-variant-numeric:tabular-nums;grid-row:span 2}
+.big small{font-size:1.6rem;color:var(--muted);font-weight:500}
+.verdict h2{font:700 1.6rem/1.1 var(--f-sign);text-transform:uppercase;letter-spacing:.02em;margin:0;text-wrap:balance}
+.verdict p{margin:0;color:var(--muted);max-width:52ch}
+.tone-good{color:var(--good)} .tone-mid{color:var(--mid)} .tone-bad{color:var(--bad)}
+
+.list{display:flex;flex-direction:column;gap:12px}
+.row{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px;display:grid;
+  grid-template-columns:56px 1fr auto;gap:14px;align-items:center}
+.sign{display:inline-flex;flex-direction:column;background:var(--sign);color:var(--sign-ink);border-radius:3px;
+  padding:4px 10px 3px;font-family:var(--f-sign);line-height:1.05;justify-self:start;max-width:100%}
+.sign b{font-weight:700;font-size:1.15rem;text-transform:uppercase;letter-spacing:.02em}
+.sign span{font-weight:500;font-size:.85rem}
+.info{min-width:0;display:flex;flex-direction:column;gap:6px}
+.sub{font-size:.85rem;color:var(--muted)}
+.score{text-align:right}
+.score b{display:block;font:700 2.4rem/1 var(--f-sign);font-variant-numeric:tabular-nums}
+.score span{font:500 .7rem var(--f-data);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.gauge svg{display:block}
+.chips{display:flex;flex-wrap:wrap;gap:6px 14px;font:400 .78rem var(--f-data);color:var(--muted)}
+.chips em{font-style:normal;color:var(--ink)}
+details{grid-column:1/-1;border-top:1px solid var(--line);padding-top:8px}
+summary{cursor:pointer;font:500 .78rem var(--f-data);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+table{border-collapse:collapse;width:100%;font:400 .8rem var(--f-data);margin-top:8px;font-variant-numeric:tabular-nums}
+th,td{text-align:right;padding:4px 6px;border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+th{color:var(--muted);font-weight:500}
+.tbl{overflow-x:auto}
+
+.method{font-size:.9rem;color:var(--muted);display:flex;flex-direction:column;gap:8px;max-width:65ch}
+.method h3{font:700 1.1rem var(--f-sign);text-transform:uppercase;letter-spacing:.04em;color:var(--ink);margin:0}
+.method p{margin:0}
+@media (max-width:480px){
+  .row{grid-template-columns:44px 1fr auto;gap:10px}
+  .big{font-size:4.2rem}
+}
+@media (prefers-reduced-motion:no-preference){.row{transition:border-color .2s}.row:hover{border-color:var(--fog-ink)}}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Mer de nuages</h1>
+    <div class="meta" id="meta">Chargement des prévisions</div>
+  </header>
+
+  <nav class="tabs" id="tabs" aria-label="Jour"></nav>
+
+  <section class="verdict" id="verdict" aria-live="polite"></section>
+
+  <section class="list" id="list"></section>
+
+  <section class="method">
+    <h3>Comment l'indice est calculé</h3>
+    <p>Pour chaque sommet, on regarde la colonne d'air de la vallée qu'il domine à l'heure du lever : AROME (Météo-France) et ICON-D2 (DWD), niveaux 1000 à 700 hPa.</p>
+    <p>L'indice de mer combine la présence de nuages bas, l'altitude du sommet de la couche sous le sommet visé (avec marge), l'air sec au sommet, la force de l'inversion, le vent en altitude et la situation de la veille au soir. L'indice final pondère ensuite par le ciel au dessus (nuages moyens et hauts), qui décide si le lever est visible.</p>
+    <p>Ce n'est pas encore une probabilité calibrée. Les modèles captent mal les couches de 200 à 300 m : note tes sorties pour qu'on ajuste les seuils.</p>
+  </section>
+</div>
+
+<script>
+const EXAMPLE = {"generated":"2026-10-22T15:00+00:00","example":true,"models":["AROME","ICON-D2"],"days":["2026-10-23","2026-10-24"],"summits":[
+{"id":"rachais","name":"Mont Rachais","massif":"Chartreuse","alt":1046,"valley":"Cuvette grenobloise","days":[
+ {"date":"2026-10-23","sunrise":"08:11","sea":31,"sky":88,"worth":28,"agreement":82,"top":1010,"persist":40,"models":{"AROME":{"sea":38,"sky":90,"top":990,"wind":8,"rh_summit":84,"inversion":4.1,"low":95},"ICON-D2":{"sea":24,"sky":86,"top":1030,"wind":10,"rh_summit":88,"inversion":3.2,"low":90}}},
+ {"date":"2026-10-24","sunrise":"08:12","sea":12,"sky":40,"worth":7,"agreement":90,"top":null,"persist":null,"models":{"AROME":{"sea":14,"sky":42,"top":null,"wind":18,"rh_summit":70,"inversion":0.5,"low":30},"ICON-D2":{"sea":10,"sky":38,"top":null,"wind":20,"rh_summit":72,"inversion":0.2,"low":25}}}]},
+{"id":"eynard","name":"Fort Saint Eynard","massif":"Chartreuse","alt":1338,"valley":"Grésivaudan","days":[
+ {"date":"2026-10-23","sunrise":"08:10","sea":72,"sky":88,"worth":66,"agreement":78,"top":1020,"persist":70,"models":{"AROME":{"sea":83,"sky":90,"top":1000,"wind":9,"rh_summit":52,"inversion":7.8,"low":97},"ICON-D2":{"sea":61,"sky":86,"top":1040,"wind":11,"rh_summit":60,"inversion":6.1,"low":92}}},
+ {"date":"2026-10-24","sunrise":"08:11","sea":10,"sky":40,"worth":6,"agreement":92,"top":null,"persist":null,"models":{"AROME":{"sea":12,"sky":42,"top":null,"wind":18,"rh_summit":66,"inversion":0.8,"low":30},"ICON-D2":{"sea":8,"sky":38,"top":null,"wind":22,"rh_summit":70,"inversion":0.1,"low":25}}}]},
+{"id":"moucherotte","name":"Moucherotte","massif":"Vercors","alt":1901,"valley":"Cuvette grenobloise","days":[
+ {"date":"2026-10-23","sunrise":"08:11","sea":88,"sky":90,"worth":84,"agreement":90,"top":1010,"persist":80,"models":{"AROME":{"sea":93,"sky":92,"top":990,"wind":12,"rh_summit":31,"inversion":11.2,"low":95},"ICON-D2":{"sea":83,"sky":88,"top":1030,"wind":14,"rh_summit":38,"inversion":9.6,"low":90}}},
+ {"date":"2026-10-24","sunrise":"08:12","sea":11,"sky":40,"worth":7,"agreement":92,"top":null,"persist":null,"models":{"AROME":{"sea":12,"sky":42,"top":null,"wind":24,"rh_summit":60,"inversion":0.4,"low":30},"ICON-D2":{"sea":9,"sky":38,"top":null,"wind":26,"rh_summit":64,"inversion":0.0,"low":25}}}]},
+{"id":"chamechaude","name":"Chamechaude","massif":"Chartreuse","alt":2082,"valley":"Grésivaudan","days":[
+ {"date":"2026-10-23","sunrise":"08:10","sea":85,"sky":86,"worth":79,"agreement":88,"top":1020,"persist":78,"models":{"AROME":{"sea":91,"sky":88,"top":1000,"wind":13,"rh_summit":30,"inversion":11.0,"low":97},"ICON-D2":{"sea":79,"sky":84,"top":1040,"wind":15,"rh_summit":36,"inversion":9.2,"low":92}}},
+ {"date":"2026-10-24","sunrise":"08:11","sea":9,"sky":40,"worth":6,"agreement":94,"top":null,"persist":null,"models":{"AROME":{"sea":10,"sky":42,"top":null,"wind":26,"rh_summit":58,"inversion":0.3,"low":30},"ICON-D2":{"sea":8,"sky":38,"top":null,"wind":28,"rh_summit":62,"inversion":0.0,"low":25}}}]},
+{"id":"moucherolle","name":"Grande Moucherolle","massif":"Vercors","alt":2284,"valley":"Cuvette grenobloise","days":[
+ {"date":"2026-10-23","sunrise":"08:11","sea":86,"sky":90,"worth":82,"agreement":90,"top":1010,"persist":80,"models":{"AROME":{"sea":91,"sky":92,"top":990,"wind":15,"rh_summit":28,"inversion":10.8,"low":95},"ICON-D2":{"sea":81,"sky":88,"top":1030,"wind":17,"rh_summit":34,"inversion":9.1,"low":90}}},
+ {"date":"2026-10-24","sunrise":"08:12","sea":9,"sky":40,"worth":6,"agreement":94,"top":null,"persist":null,"models":{"AROME":{"sea":10,"sky":42,"top":null,"wind":28,"rh_summit":58,"inversion":0.2,"low":30},"ICON-D2":{"sea":8,"sky":38,"top":null,"wind":30,"rh_summit":60,"inversion":0.0,"low":25}}}]},
+{"id":"veymont","name":"Grand Veymont","massif":"Vercors","alt":2341,"valley":"Trièves","days":[
+ {"date":"2026-10-23","sunrise":"08:10","sea":58,"sky":84,"worth":51,"agreement":64,"top":880,"persist":45,"models":{"AROME":{"sea":70,"sky":86,"top":860,"wind":16,"rh_summit":30,"inversion":8.0,"low":80},"ICON-D2":{"sea":46,"sky":82,"top":900,"wind":18,"rh_summit":35,"inversion":6.4,"low":60}}},
+ {"date":"2026-10-24","sunrise":"08:11","sea":8,"sky":40,"worth":5,"agreement":94,"top":null,"persist":null,"models":{"AROME":{"sea":9,"sky":42,"top":null,"wind":30,"rh_summit":56,"inversion":0.1,"low":25},"ICON-D2":{"sea":7,"sky":38,"top":null,"wind":32,"rh_summit":58,"inversion":0.0,"low":20}}}]}
+]};
+
+const $ = s => document.querySelector(s);
+const hhmm = t => { const [h,m] = t.split(":"); return `${+h}h${m}`; };
+const dayLabel = (iso, i) => {
+  const d = new Date(iso + "T12:00");
+  const name = d.toLocaleDateString("fr-FR",{weekday:"long", day:"numeric", month:"long"});
+  return name;
+};
+const shortDay = (iso) => new Date(iso+"T12:00").toLocaleDateString("fr-FR",{weekday:"short", day:"numeric"});
+const isoLocal = d => d.toLocaleDateString("sv-SE");
+const relDay = iso => {
+  const t = new Date(); const tm = new Date(Date.now() + 864e5);
+  return iso === isoLocal(t) ? "Ce matin" : iso === isoLocal(tm) ? "Demain matin" : shortDay(iso);
+};
+const tone = v => v >= 70 ? "good" : v >= 45 ? "mid" : "bad";
+const verdictText = v => v >= 75 ? "Ça vaut le réveil" : v >= 55 ? "À tenter si tu es motivé" : v >= 35 ? "Peu probable" : "Reste couché";
+
+let data, dayIdx = 0;
+
+function gauge(alt, top) {
+  // coupe verticale : 200 m (fond de vallée) à 2500 m
+  const H = 64, W = 44, lo = 200, hi = 2500;
+  const y = z => H - 4 - (Math.min(Math.max(z,lo),hi) - lo) / (hi - lo) * (H - 8);
+  const cloud = top ? `<rect x="2" y="${y(top)}" width="${W-4}" height="${y(lo)-y(top)}" rx="3" fill="var(--fog)"/>
+    <line x1="2" x2="${W-2}" y1="${y(top)}" y2="${y(top)}" stroke="var(--fog-ink)" stroke-dasharray="2 2"/>` : "";
+  return `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Sommet à ${alt} m, ${top ? "mer vers " + top + " m" : "pas de couche basse"}">
+    <rect x="1" y="1" width="${W-2}" height="${H-2}" rx="5" fill="none" stroke="var(--line)"/>
+    ${cloud}
+    <path d="M${W/2-9} ${y(alt)+8} L${W/2} ${y(alt)} L${W/2+9} ${y(alt)+8} Z" fill="var(--ink)"/>
+  </svg>`;
+}
+
+function render() {
+  const date = data.days[dayIdx];
+  $("#tabs").innerHTML = data.days.map((d,i) =>
+    `<button type="button" id="tab-${i}" aria-pressed="${i===dayIdx}" data-i="${i}">${relDay(d)}</button>`).join("");
+  $("#tabs").querySelectorAll("button").forEach(b => b.onclick = () => { dayIdx = +b.dataset.i; render(); });
+
+  const rows = data.summits.map(s => ({s, d: s.days.find(x => x.date === date)})).filter(r => r.d)
+    .sort((a,b) => b.d.worth - a.d.worth);
+  const best = rows[0];
+  if (!best) { $("#verdict").innerHTML = "<p>Pas de prévision pour ce jour.</p>"; $("#list").innerHTML = ""; return; }
+  const t = tone(best.d.worth);
+  $("#verdict").innerHTML = `
+    <div class="big tone-${t}">${best.d.worth}<small>/100</small></div>
+    <h2 class="tone-${t}">${verdictText(best.d.worth)}</h2>
+    <p>${dayLabel(date)}, lever à ${hhmm(best.d.sunrise)}. Meilleur choix : <strong>${best.s.name}</strong> (${best.s.alt} m)${best.d.top ? `, mer prévue vers ${best.d.top} m` : ""}.</p>`;
+
+  $("#list").innerHTML = rows.map(({s,d}) => {
+    const models = Object.entries(d.models).filter(([,m]) => m);
+    return `<article class="row">
+      <div class="gauge">${gauge(s.alt, d.top)}</div>
+      <div class="info">
+        <div class="sign"><b>${s.name}</b><span>${s.alt} m · ${s.massif}</span></div>
+        <div class="chips">
+          <span>mer <em>${d.sea}</em></span>
+          <span>ciel <em>${d.sky}</em></span>
+          <span>sommet couche <em>${d.top ? d.top + " m" : "aucune"}</em></span>
+          <span>accord modèles <em>${d.agreement}</em></span>
+        </div>
+      </div>
+      <div class="score"><b class="tone-${tone(d.worth)}">${d.worth}</b><span>indice</span></div>
+      <details>
+        <summary>Détail par modèle · vallée : ${s.valley}</summary>
+        <div class="tbl"><table>
+          <thead><tr><th>Modèle</th><th>Mer</th><th>Ciel</th><th>Couche</th><th>Nuages bas</th><th>HR sommet</th><th>Inversion</th><th>Vent</th></tr></thead>
+          <tbody>${models.map(([k,m]) => `<tr><td>${k}</td><td>${m.sea}</td><td>${m.sky}</td><td>${m.top ?? "aucune"}${m.top?" m":""}</td><td>${m.low ?? ""} %</td><td>${m.rh_summit ?? ""} %</td><td>${m.inversion ?? ""} °C</td><td>${m.wind} km/h</td></tr>`).join("")}</tbody>
+        </table></div>
+        ${d.persist != null ? `<p class="sub">Situation la veille à 17h : indice ${d.persist}.</p>` : ""}
+      </details>
+    </article>`;
+  }).join("");
+}
+
+function setMeta() {
+  const g = new Date(data.generated);
+  const t = g.toLocaleString("fr-FR",{weekday:"short", hour:"2-digit", minute:"2-digit"}).replace(":", "h");
+  $("#meta").innerHTML = `Mis à jour ${t} · ${data.models.join(" + ")}` + (data.example ? `<span class="badge">exemple</span>` : "");
+}
+
+fetch("data.json", {cache:"no-store"}).then(r => { if (!r.ok) throw 0; return r.json(); })
+  .catch(() => EXAMPLE)
+  .then(d => { data = d; setMeta(); render(); });
+</script>
+
+</body>
+</html>
