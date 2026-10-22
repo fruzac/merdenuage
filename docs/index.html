@@ -29,6 +29,22 @@ h2{font:700 15px/1.2 var(--f-cond);margin:0}
 .tabs button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 button:focus-visible,summary:focus-visible{outline:2px solid var(--sun);outline-offset:2px}
 
+.time{display:flex;flex-direction:column;gap:6px;border:1px solid var(--line);padding:12px;background:#F6F7F2}
+.time-head{display:flex;align-items:baseline;gap:10px}
+.clock{font:700 30px/1 var(--f-cond);font-variant-numeric:tabular-nums}
+.clock-day{font-size:12px;color:var(--muted)}
+.time-state{font-size:11px;color:var(--ink2);min-height:16px}
+.strip{position:relative;display:grid;height:40px;align-items:end;border-bottom:1px solid var(--ink)}
+.strip .h{position:relative;height:100%;display:flex;align-items:flex-end;justify-content:center;cursor:pointer}
+.strip .h.night{background:#ECEEE7}
+.strip .bar{width:70%;background-color:#DDE3EA;background-image:repeating-linear-gradient(135deg,transparent 0 3px,#B9C4D0 3px 4px);border-top:1px dashed var(--ink2)}
+.strip .bar.deep{background-color:#C9D2DC}
+.strip .h.sun::after{content:"";position:absolute;top:0;left:50%;width:2px;height:8px;background:var(--sun);transform:translateX(-50%)}
+.strip .h.on{outline:2px solid var(--ink);outline-offset:-1px;z-index:1}
+#slider{width:100%;margin:0;accent-color:var(--ink);height:28px}
+.strip-labels{position:relative;height:12px;font-size:9px;color:var(--muted);margin-top:-6px}
+.strip-labels span{position:absolute;transform:translateX(-50%)}
+.time .tabs button{min-height:36px;padding:0 10px;font-size:11px}
 .map{position:relative;width:100%;aspect-ratio:354/240;border:1px solid var(--line);overflow:hidden;
   background-color:var(--bg);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:100% 30px,30px 100%}
 .map img,.map canvas{position:absolute;inset:0;width:100%;height:100%}
@@ -77,7 +93,17 @@ th{font-weight:500}
     <div class="meta" id="meta">chargement</div>
   </header>
 
-  <nav class="tabs" id="tabs" aria-label="Jour"></nav>
+  <section class="time" id="time" aria-label="Heure affichée">
+    <div class="time-head">
+      <span class="clock" id="clock">17h00</span>
+      <span class="clock-day" id="clockday"></span>
+    </div>
+    <div class="time-state" id="timestate"></div>
+    <div class="strip" id="strip" aria-hidden="true"></div>
+    <input type="range" id="slider" min="0" max="0" step="1" value="0" aria-label="Heure affichée sur la carte et le graphique">
+    <div class="strip-labels" id="striplabels" aria-hidden="true"></div>
+    <nav class="tabs" id="tabs" aria-label="Aller à"></nav>
+  </section>
 
   <section aria-label="Carte">
     <div class="map" id="map">
@@ -89,11 +115,13 @@ th{font-weight:500}
 
   <section style="display:flex;flex-direction:column;gap:6px">
     <h2>Hauteurs comparées</h2>
+    <div class="note" id="chartnote"></div>
     <div class="chart" id="chart"></div>
   </section>
 
   <section style="display:flex;flex-direction:column;gap:14px">
     <h2>Sommets</h2>
+    <div class="note" id="peaksnote" style="margin-top:-8px"></div>
     <div id="peaks" style="display:flex;flex-direction:column;gap:14px"></div>
   </section>
 
@@ -135,7 +163,9 @@ const SHAPES = {
 };
 const DEFAULT_BBOX = { lat0: 45.015, lat1: 45.31, lon0: 5.423, lon1: 6.037 };
 
-let DATA = null, DEM = null, dayIdx = 0;
+let DATA = null, DEM = null, dayIdx = 0, tIdx = 0;
+const hourLabel = iso => `${+iso.slice(11, 13)}h00`;
+const sunHour = iso => iso.slice(0, 13) + ':00';
 
 function dayRows(date) {
   return DATA.summits.map(s => {
@@ -156,6 +186,53 @@ function coverAbove(r) {
   const m = Object.values(r.d.models || {}).filter(Boolean);
   return m.length ? Math.round(Math.max(avg(m.map(x => x.mid)), avg(m.map(x => x.high)))) : 0;
 }
+
+function TL() { return DATA.timeline && DATA.timeline.hours && DATA.timeline.hours.length ? DATA.timeline : null; }
+
+// état de la couche par vallée à l'heure choisie
+function stateAt(i) {
+  const tl = TL(), out = {};
+  if (!tl) return null;
+  for (const [vid, arr] of Object.entries(tl.valleys)) out[vid] = arr[i] || null;
+  return out;
+}
+
+function renderTime() {
+  const tl = TL();
+  const n = tl.hours.length, ref = tl.valleys.grenoble || Object.values(tl.valleys)[0];
+  const suns = new Set((DATA.sunrises || []).map(sunHour));
+  const strip = $('#strip');
+  strip.style.gridTemplateColumns = `repeat(${n}, minmax(0, 1fr))`;
+  strip.innerHTML = tl.hours.map((h, i) => {
+    const v = ref[i], hr = +h.slice(11, 13), night = hr >= 19 || hr < 8;
+    const bar = v && v.top != null ? `<div class="bar${v.deep ? ' deep' : ''}" style="height:${Math.min(100, v.top / 2500 * 100).toFixed(0)}%"></div>` : '';
+    return `<div class="h${night ? ' night' : ''}${suns.has(h) ? ' sun' : ''}${i === tIdx ? ' on' : ''}" data-i="${i}">${bar}</div>`;
+  }).join('');
+  strip.querySelectorAll('.h').forEach(c => c.onclick = () => setT(+c.dataset.i));
+  $('#striplabels').innerHTML = tl.hours.map((h, i) => +h.slice(11, 13) % 6 === 0
+    ? `<span style="left:${((i + .5) / n * 100).toFixed(2)}%">${+h.slice(11, 13)}h</span>` : '').join('');
+  const sl = $('#slider'); sl.max = n - 1; sl.value = tIdx;
+  const h = tl.hours[tIdx];
+  $('#clock').textContent = hourLabel(h);
+  $('#clockday').textContent = dayLabel(h.slice(0, 10)) + (tIdx === nowIdx() ? ' · maintenant' : '');
+  const chips = [`<button type="button" data-i="${nowIdx()}" aria-pressed="${tIdx === nowIdx()}">maintenant</button>`];
+  (DATA.sunrises || []).forEach(sr => {
+    const i = tl.hours.indexOf(sunHour(sr));
+    if (i >= 0) chips.push(`<button type="button" data-i="${i}" aria-pressed="${tIdx === i}">lever ${dayLabel(sr.slice(0, 10))}</button>`);
+  });
+  $('#tabs').innerHTML = chips.join('');
+  $('#tabs').querySelectorAll('button').forEach(b => b.onclick = () => setT(+b.dataset.i));
+}
+
+function nowIdx() {
+  const tl = TL();
+  if (!tl) return 0;
+  const d = new Date(), key = `${d.toLocaleDateString('sv-SE')}T${String(d.getHours()).padStart(2, '0')}:00`;
+  const i = tl.hours.indexOf(key);
+  return i >= 0 ? i : (key < tl.hours[0] ? 0 : tl.hours.length - 1);
+}
+
+function setT(i) { tIdx = i; render(); }
 
 function renderTabs() {
   $('#tabs').innerHTML = DATA.days.map((iso, i) =>
@@ -205,15 +282,6 @@ function renderMap(rows) {
   map.append(sc);
   drawFog(rows, bb);
 
-  const tops = valleyTops(rows);
-  const vals = [...new Set(Object.values(tops).filter(v => v != null))].sort((a, b) => a - b);
-  const src = DEM ? 'relief Copernicus' : 'relief non chargé';
-  let txt;
-  const covered = rows.some(r => coverAbove(r) >= 70);
-  if (!vals.length) txt = 'pas de mer de nuages prévue au lever' + (covered ? ', ciel couvert au dessus' : '');
-  else if (vals[0] > 2500) txt = 'couche épaisse au lever : sommets dans les nuages';
-  else txt = `<span class="swatch"></span>nuages au lever : ${vals.map(v => v + ' m').join(', ')}`;
-  $('#legend').innerHTML = `<span>${txt}</span><span>${src}</span>`;
 }
 
 function shortName(n) {
@@ -421,14 +489,58 @@ function renderPeaks(rows) {
 }
 
 function render() {
-  const date = DATA.days[dayIdx];
+  const tl = TL();
+  let date, view, when;
+  if (tl) {
+    const h = tl.hours[tIdx];
+    // indices : le lever à venir le plus proche de l'heure choisie
+    const next = (DATA.sunrises || []).find(x => sunHour(x) >= h);
+    date = next ? next.slice(0, 10) : DATA.days[DATA.days.length - 1];
+    view = stateAt(tIdx);
+    when = `à ${hourLabel(h)}`;
+  } else {
+    date = DATA.days[dayIdx];
+    when = 'au lever';
+  }
   const rows = dayRows(date);
+  // rangées affichées sur la carte et le graphique : couche à l'heure choisie
+  const shown = view ? rows.map(r => {
+    const v = view[r.s.valley_id];
+    const top = v ? v.top : null;
+    return { ...r, top, deepNow: v && v.deep, marge: top == null ? null : r.s.alt - top };
+  }) : rows;
   const sr = rows[0] && rows[0].d.sunrise;
-  $('#title').textContent = `${dayLabel(date)}${sr ? ' · lever ' + hhmm(sr) : ''}`;
-  renderTabs();
-  renderMap(rows);
-  renderChart(rows);
+  const sunTxt = `${dayLabel(date)}${sr ? ', ' + hhmm(sr) : ''}`;
+  if (tl) renderTime();
+  else {
+    // anciennes données sans heure par heure : on garde les onglets par jour
+    ['#strip', '#slider', '#striplabels', '#timestate'].forEach(q => $(q).hidden = true);
+    $('#clock').textContent = sr ? hhmm(sr) : '';
+    $('#clockday').textContent = `lever ${dayLabel(date)}`;
+    renderTabs();
+  }
+  renderMap(shown);
+  renderLegend(shown, view, when);
+  $('#chartnote').textContent = `nappe ${when} · indices du lever ${sunTxt}`;
+  $('#peaksnote').textContent = `indices pour le lever ${sunTxt}`;
+  renderChart(shown);
   renderPeaks(rows);
+}
+
+function renderLegend(rows, view, when) {
+  const tops = valleyTops(rows);
+  const vals = [...new Set(Object.values(tops).filter(v => v != null))].sort((a, b) => a - b);
+  let cover;
+  if (view) {
+    const vs = Object.values(view).filter(Boolean);
+    cover = vs.length ? Math.max(...vs.map(v => Math.max(v.mid, v.high))) : 0;
+  } else cover = Math.max(0, ...rows.map(coverAbove));
+  let txt;
+  if (!vals.length) txt = `pas de mer de nuages ${when}` + (cover >= 70 ? ', ciel couvert au dessus' : '');
+  else if (rows.some(r => r.deepNow) || vals[0] > 2500) txt = `couche épaisse ${when} : sommets dans les nuages`;
+  else txt = `<span class="swatch"></span>nuages ${when} : ${vals.map(v => v + ' m').join(', ')}` + (cover >= 70 ? ', couvert au dessus' : '');
+  $('#legend').innerHTML = `<span>${txt}</span><span>${DEM ? 'relief Copernicus' : 'relief non chargé'}</span>`;
+  if (TL()) $('#timestate').innerHTML = txt.replace('<span class="swatch"></span>', '');
 }
 
 Promise.all([
@@ -437,8 +549,10 @@ Promise.all([
 ]).then(([data, dem]) => {
   if (!data || !data.days || !data.days.length) { $('#meta').textContent = 'données indisponibles'; return; }
   DATA = data; DEM = dem;
+  tIdx = nowIdx();
+  $('#slider').addEventListener('input', e => setT(+e.target.value));
   const g = new Date(data.generated);
-  $('#meta').textContent = `prévision au lever · màj ${g.toLocaleDateString('fr-FR', { weekday: 'short' })} ${g.getHours()}h${String(g.getMinutes()).padStart(2, '0')}`;
+  $('#meta').textContent = `prévision · màj ${g.toLocaleDateString('fr-FR', { weekday: 'short' })} ${g.getHours()}h${String(g.getMinutes()).padStart(2, '0')}`;
   render();
   let t;
   window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(() => renderMap(dayRows(DATA.days[dayIdx])), 150); });

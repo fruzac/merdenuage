@@ -44,7 +44,9 @@ La Bastille a été écartée (trop basse). Il a aussi mentionné la Chartreuse 
 
 DA « carnet technique » : fond papier #FBFBF8, encre ardoise, IBM Plex Mono et IBM Plex Sans Condensed, nappe de nuages toujours en hachures gris bleu avec bord pointillé, indice en vert (70 et plus), ambre (45 à 69), gris (en dessous). Pas de marron, pas de verdict « oui / non » : il veut juste voir les scores.
 
-Trois blocs, dans cet ordre, pour le jour choisi :
+En haut, un curseur heure par heure (de maintenant jusqu'à 3 h après le dernier lever prévu) : il déplace la nappe sur la carte et dans les hauteurs comparées, avec une frise de l'altitude de la couche (cuvette) et des raccourcis « maintenant » et « lever ». Les indices restent ceux du prochain lever. Données : `timeline` dans data.json (par vallée et par heure : top, deep, low, mid, high ; une couche n'est retenue que si au moins un modèle sur deux la voit).
+
+Trois blocs, dans cet ordre :
 1. Petite carte : `docs/carte.png` (relief réel Copernicus DEM, ombrage gris léger, courbes tous les 100 m) + nappe dessinée en canvas depuis `docs/dem.json` : remplissage depuis le fond de chaque vallée tant que le relief est sous l'altitude prévue de la couche. Sommets placés par lat/lon (`SUMMITS` dans forecast.py, champ `label` pour le côté de l'étiquette).
 2. Hauteurs comparées : sommets à l'échelle côte à côte, silhouette propre à chaque sommet (`SHAPES` dans la page), bande hachurée à l'altitude de la couche de sa vallée, marge en blanc dans la silhouette ou en rouge si moins de 150 m.
 3. Sommets : un bloc par pic, trié par indice (barre couche / sommet, marge, humidité au sommet, vent, ciel, accord des modèles, détail par modèle repliable).

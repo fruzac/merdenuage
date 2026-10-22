@@ -232,6 +232,51 @@ def combine(per_model, persist):
     }
 
 
+def valley_hour(h, i, ground):
+    """Etat de la couche dans la vallee a l'heure i, moyenne des modeles."""
+    per = []
+    for m in MODELS:
+        col = column(h, m, i)
+        if len(col) < 4:
+            continue
+        low = at(series(h, "cloud_cover_low", m), i) or 0
+        top, deep = cloud_top(col, ground, low)
+        per.append({"top": top, "deep": deep, "low": low,
+                    "mid": at(series(h, "cloud_cover_mid", m), i) or 0,
+                    "high": at(series(h, "cloud_cover_high", m), i) or 0})
+    if not per:
+        return None
+    tops = [p["top"] for p in per if p["top"] is not None]
+    with_top = [p for p in per if p["top"] is not None]
+    n = len(per)
+    return {
+        # une couche n'est affichee que si au moins la moitie des modeles la voient
+        "top": round(sum(tops) / len(tops)) if tops and len(tops) * 2 >= n else None,
+        "deep": bool(with_top) and all(p["deep"] for p in with_top),
+        "low": round(sum(p["low"] for p in per) / n),
+        "mid": round(sum(p["mid"] for p in per) / n),
+        "high": round(sum(p["high"] for p in per) / n),
+    }
+
+
+def timeline(cache, last_sunrise):
+    """Heure par heure, de maintenant jusqu'a 3 h apres le dernier lever prevu."""
+    now = datetime.now(PARIS).replace(minute=0, second=0, microsecond=0, tzinfo=None)
+    end = datetime.fromisoformat(last_sunrise) + timedelta(hours=3) if last_sunrise else now + timedelta(hours=36)
+    hours, valleys = [], {}
+    any_data = next(iter(cache.values()))["hourly"]["time"]
+    for t in any_data:
+        dt = datetime.fromisoformat(t)
+        if now <= dt <= end:
+            hours.append(t)
+    for vid, data in cache.items():
+        h = data["hourly"]
+        ground = data.get("elevation", 220)
+        idx = {t: k for k, t in enumerate(h["time"])}
+        valleys[vid] = [valley_hour(h, idx[t], ground) if t in idx else None for t in hours]
+    return {"hours": hours, "valleys": valleys}
+
+
 def run():
     now = datetime.now(timezone.utc)
     out = {"generated": now.isoformat(timespec="minutes"), "models": [MODEL_LABEL[m] for m in MODELS],
@@ -264,6 +309,9 @@ def run():
                                "valley": v["name"], "valley_id": s["valley"], "days": days})
     dates = sorted({d["date"] for s in out["summits"] for d in s["days"]})
     out["days"] = dates
+    sunrises = sorted({f"{d['date']}T{d['sunrise']}" for s in out["summits"] for d in s["days"]})
+    out["sunrises"] = sunrises
+    out["timeline"] = timeline(cache, sunrises[-1] if sunrises else None)
     return out
 
 
