@@ -40,6 +40,7 @@ button:focus-visible,summary:focus-visible{outline:2px solid var(--sun);outline-
 .strip .h.night{background:#ECEEE7}
 .strip .bar{width:70%;background-color:#DDE3EA;background-image:repeating-linear-gradient(135deg,transparent 0 3px,#B9C4D0 3px 4px);border-top:1px dashed var(--ink2)}
 .strip .bar.deep{background-color:#C9D2DC}
+.strip .seg{position:absolute;left:15%;width:70%;background-color:#DDE3EA;background-image:repeating-linear-gradient(135deg,transparent 0 3px,#B9C4D0 3px 4px);border-bottom:1px dashed var(--ink2);max-height:100%}
 .strip .h.sun::after{content:"";position:absolute;top:0;left:50%;width:2px;height:8px;background:var(--sun);transform:translateX(-50%)}
 .strip .h.on{outline:2px solid var(--ink);outline-offset:-1px;z-index:1}
 #slider{width:100%;margin:0;accent-color:var(--ink);height:28px}
@@ -188,6 +189,12 @@ function coverAbove(r) {
   return m.length ? Math.round(Math.max(avg(m.map(x => x.mid)), avg(m.map(x => x.high)))) : 0;
 }
 
+// le sommet est-il dans une couche (mer ou nuages accrochés) ?
+function inCloud(alt, top, layers) {
+  return (top != null && alt <= top) || (layers || []).some(l => l[0] <= alt && (l[2] || alt <= l[1]));
+}
+const layerTxt = l => l[2] ? `au dessus de ${l[0]} m` : `de ${l[0]} à ${l[1]} m`;
+
 function TL() { return DATA.timeline && DATA.timeline.hours && DATA.timeline.hours.length ? DATA.timeline : null; }
 
 // état de la couche par vallée à l'heure choisie
@@ -207,7 +214,8 @@ function renderTime() {
   strip.innerHTML = tl.hours.map((h, i) => {
     const v = ref[i], hr = +h.slice(11, 13), night = hr >= 19 || hr < 8;
     const bar = v && v.top != null ? `<div class="bar${v.deep ? ' deep' : ''}" style="height:${Math.min(100, v.top / 2500 * 100).toFixed(0)}%"></div>` : '';
-    return `<div class="h${night ? ' night' : ''}${suns.has(h) ? ' sun' : ''}${i === tIdx ? ' on' : ''}" data-i="${i}">${bar}</div>`;
+    const segs = v && v.layers ? v.layers.map(l => `<div class="seg" style="bottom:${Math.min(100, l[0] / 2500 * 100).toFixed(0)}%;height:${Math.max(4, Math.min(100, (l[2] ? 2500 : l[1]) / 2500 * 100) - l[0] / 2500 * 100).toFixed(0)}%"></div>`).join('') : '';
+    return `<div class="h${night ? ' night' : ''}${suns.has(h) ? ' sun' : ''}${i === tIdx ? ' on' : ''}" data-i="${i}">${bar}${segs}</div>`;
   }).join('');
   strip.querySelectorAll('.h').forEach(c => c.onclick = () => setT(+c.dataset.i));
   $('#striplabels').innerHTML = tl.hours.map((h, i) => +h.slice(11, 13) % 6 === 0
@@ -262,7 +270,7 @@ function renderMap(rows) {
     tag.style.top = `calc(${p.y * 100}% + 2px)`;
     if (r.s.label === 'left') tag.style.right = `calc(${(1 - p.x) * 100}% + 9px)`;
     else tag.style.left = `calc(${p.x * 100}% + 9px)`;
-    tag.innerHTML = `<b class="c-${t}">${r.score}</b> ${esc(shortName(r.s.name))}`;
+    tag.innerHTML = `<b class="c-${t}">${r.score}</b> ${esc(shortName(r.s.name))}${r.inCloud ? ' <span style="color:#B42318">· nuages</span>' : ''}`;
     map.append(pin, tag);
   });
   const g = DATA.valleys && DATA.valleys.grenoble;
@@ -384,7 +392,7 @@ function drawFog(rows, bb) {
 }
 
 /* ---------- Hauteurs comparées ---------- */
-function renderChart(rows) {
+function renderChart(rows, when) {
   const list = rows.slice().sort((a, b) => b.s.alt - a.s.alt);
   const N = list.length, W = 354, B = 400, step = W / N, hw = step * 0.8;
   const maxAlt = Math.max(...list.map(r => r.s.alt));
@@ -419,7 +427,22 @@ function renderChart(rows) {
     }
   });
   if (line.length) svg += polyline(line);
-  if (list.every(r => r.top == null)) svg += `<rect x="${W / 2 - 118}" y="${B - 24}" width="236" height="18" fill="#FBFBF8" opacity=".92"/><text x="${W / 2}" y="${B - 11}" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10" fill="#6A717A" text-anchor="middle">pas de mer de nuages prévue au lever</text>`;
+  // nuages accrochés : bandes flottantes, qui ne descendent pas jusqu'au fond
+  const seen = new Set();
+  list.forEach((r, i) => (r.layers || []).forEach(l => {
+    const x0 = step * i, yT = Y(l[2] ? scaleMax * 1.07 : l[1]), yB = Y(l[0]);
+    svg += `<rect x="${x0}" y="${yT}" width="${step}" height="${Math.max(2, yB - yT)}" fill="url(#hatch)" opacity=".9"/>`;
+    svg += `<line x1="${x0}" x2="${x0 + step}" y1="${yB}" y2="${yB}" stroke="#3E4A58" stroke-dasharray="3 3"/>`;
+    if (!l[2]) svg += `<line x1="${x0}" x2="${x0 + step}" y1="${yT}" y2="${yT}" stroke="#3E4A58" stroke-dasharray="3 3"/>`;
+    // étiquette sous la bande, dans une colonne où le sommet est plus bas que la base
+    const key = `${l[0]}-${l[1]}`;
+    if (!seen.has(key) && r.s.alt < l[0] - 150) {
+      seen.add(key);
+      const tx = Math.min(x0 + 4, W - 128);
+      bandLabels += `<rect x="${tx - 2}" y="${yB + 2}" width="128" height="13" fill="#FBFBF8" opacity=".9"/><text x="${tx}" y="${yB + 12}" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="9" fill="#3E4A58">nuages ${layerTxt(l)}</text>`;
+    }
+  }));
+  if (list.every(r => r.top == null)) svg += `<rect x="${W / 2 - 118}" y="${B - 24}" width="236" height="18" fill="#FBFBF8" opacity=".92"/><text x="${W / 2}" y="${B - 11}" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10" fill="#6A717A" text-anchor="middle">pas de mer de nuages ${when}</text>`;
   svg += bandLabels;
   // étiquettes
   list.forEach((r, i) => {
@@ -429,6 +452,10 @@ function renderChart(rows) {
       const txt = r.marge > 0 ? `+${r.marge}` : 'noyé';
       svg += `<text x="${cx}" y="${apex - 5}" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10" fill="#B42318" text-anchor="middle">${txt}</text>`;
       lift = 13;
+    } else if (r.inCloud) {
+      svg += `<text x="${cx}" y="${apex - 5}" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10" fill="#B42318" text-anchor="middle">nuages</text>`;
+      lift = 13;
+      if (r.marge != null) svg += `<text x="${cx}" y="${Y(r.top) - 8}" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="${step < 60 ? 9 : 10}" fill="#FBFBF8" text-anchor="middle">+${r.marge}</text>`;
     } else if (r.marge != null) {
       const yTop = Y(r.top);
       svg += `<text x="${cx}" y="${yTop - 8}" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="${step < 60 ? 9 : 10}" fill="#FBFBF8" text-anchor="middle">+${r.marge}</text>`;
@@ -444,16 +471,20 @@ function renderChart(rows) {
 const polyline = pts => `<polyline fill="none" stroke="#3E4A58" stroke-dasharray="3 3" points="${pts.map(p => p.join(',')).join(' ')}"/>`;
 
 /* ---------- Sommets ---------- */
-function renderPeaks(rows) {
+function renderPeaks(rows, sunState) {
   const list = rows.slice().sort((a, b) => b.score - a.score || b.s.alt - a.s.alt);
   $('#peaks').innerHTML = list.map(r => {
     const t = tone(r.score);
+    const st = sunState && sunState[r.s.valley_id];
+    if (st) r = { ...r, top: st.top, layers: st.layers || [], marge: st.top == null ? null : r.s.alt - st.top, deepSun: st.deep };
+    const hit = (r.layers || []).find(l => l[0] <= r.s.alt && (l[2] || r.s.alt <= l[1]));
     const gmax = Math.max(2500, Math.ceil(Math.max(r.s.alt, Math.min(r.top ?? 0, 4000)) / 500) * 500);
     const pct = z => Math.min(100, z / gmax * 100).toFixed(1) + '%';
     let txt;
     const cov = coverAbove(r);
-    if (r.top == null) txt = `pas de mer de nuages prévue${cov >= 70 ? ` · ciel couvert au dessus (${cov} %)` : ''}`;
-    else if (r.d.deep) txt = `couche épaisse, au moins jusqu'à ${r.top} m · <span style="color:#B42318">sommet dans les nuages</span>`;
+    if (hit) txt = `nuages accrochés ${layerTxt(hit)} · <span style="color:#B42318">sommet dans les nuages</span>`;
+    else if (r.top == null) txt = `pas de mer de nuages prévue${cov >= 70 ? ` · ciel couvert au dessus (${cov} %)` : ''}`;
+    else if (st ? r.deepSun : r.d.deep) txt = `couche épaisse, au moins jusqu'à ${r.top} m · <span style="color:#B42318">sommet dans les nuages</span>`;
     else if (r.marge > 0) txt = `couche jusqu'à ${r.top} m · sommet à ${r.s.alt} m · marge <span style="color:${r.marge < 150 ? '#B42318' : '#1F2328'}">+${r.marge} m</span>`;
     else txt = `couche jusqu'à ${r.top} m · <span style="color:#B42318">sommet dans les nuages</span>`;
     const models = Object.entries(r.d.models || {}).filter(([, m]) => m);
@@ -467,6 +498,7 @@ function renderPeaks(rows) {
       </div>
       <div class="gauge">
         ${r.top != null ? `<div class="fog" style="width:${pct(r.top)}"></div>` : ''}
+        ${(r.layers || []).map(l => `<div class="fog" style="left:${pct(l[0])};width:${(Math.min(100, (l[2] ? gmax : l[1]) / gmax * 100) - l[0] / gmax * 100).toFixed(1)}%"></div>`).join('')}
         <div class="alt" style="left:${pct(r.s.alt)}"></div>
         <div class="max">${gmax} m</div>
       </div>
@@ -508,7 +540,8 @@ function render() {
   const shown = view ? rows.map(r => {
     const v = view[r.s.valley_id];
     const top = v ? v.top : null;
-    return { ...r, top, deepNow: v && v.deep, marge: top == null ? null : r.s.alt - top };
+    const layers = v && v.layers ? v.layers : [];
+    return { ...r, top, deepNow: v && v.deep, layers, marge: top == null ? null : r.s.alt - top, inCloud: inCloud(r.s.alt, top, layers) };
   }) : rows;
   const sr = rows[0] && rows[0].d.sunrise;
   const sunTxt = `${dayLabel(date)}${sr ? ', ' + hhmm(sr) : ''}`;
@@ -524,8 +557,13 @@ function render() {
   renderLegend(shown, view, when);
   $('#chartnote').textContent = `nappe ${when} · indices du lever ${sunTxt}`;
   $('#peaksnote').textContent = `indices pour le lever ${sunTxt}`;
-  renderChart(shown);
-  renderPeaks(rows);
+  renderChart(shown, when);
+  let sunState = null;
+  if (tl) {
+    const sri = tl.hours.indexOf(sunHour(`${date}T${sr || '08:00'}`));
+    if (sri >= 0) sunState = stateAt(sri);
+  }
+  renderPeaks(rows, sunState);
 }
 
 function renderLegend(rows, view, when) {
@@ -540,6 +578,11 @@ function renderLegend(rows, view, when) {
   if (!vals.length) txt = `pas de mer de nuages ${when}` + (cover >= 70 ? ', ciel couvert au dessus' : '');
   else if (rows.some(r => r.deepNow) || vals[0] > 2500) txt = `couche épaisse ${when} : sommets dans les nuages`;
   else txt = `<span class="swatch"></span>nuages ${when} : ${vals.map(v => v + ' m').join(', ')}` + (cover >= 70 ? ', couvert au dessus' : '');
+  if (view) {
+    const al = [];
+    Object.values(view).filter(Boolean).forEach(v => (v.layers || []).forEach(l => { const t = layerTxt(l); if (!al.includes(t)) al.push(t); }));
+    if (al.length) txt += ` · nuages accrochés ${al.slice(0, 2).join(', ')}`;
+  }
   $('#legend').innerHTML = `<span>${txt}</span><span>${DEM ? 'relief Copernicus' : 'relief non chargé'}</span>`;
   if (TL()) $('#timestate').innerHTML = txt.replace('<span class="swatch"></span>', '');
 }

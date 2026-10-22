@@ -232,31 +232,92 @@ def combine(per_model, persist):
     }
 
 
+def mean_column(h, i):
+    """Colonne moyenne des modeles (humidite moyennee niveau par niveau)."""
+    col = []
+    for p in LEVELS:
+        vals = []
+        for m in MODELS:
+            z = at(series(h, f"geopotential_height_{p}hPa", m), i)
+            t = at(series(h, f"temperature_{p}hPa", m), i)
+            rh = at(series(h, f"relative_humidity_{p}hPa", m), i)
+            if None not in (z, t, rh):
+                vals.append((z, t, rh))
+        if vals:
+            n = len(vals)
+            col.append((sum(v[0] for v in vals) / n, sum(v[1] for v in vals) / n, sum(v[2] for v in vals) / n, None))
+    col.sort()
+    return col
+
+
+def cloud_layers(col, ground):
+    """Couches saturees de la colonne : [[base, sommet, ouverte vers le haut], ...]."""
+    pts = [c for c in col if ground + 30 < c[0] < 3200]
+    out, j = [], 0
+    while j < len(pts):
+        if pts[j][2] >= SAT_RH:
+            start = j
+            while j + 1 < len(pts) and pts[j + 1][2] >= SAT_RH:
+                j += 1
+            if start == 0:
+                base = ground
+            else:
+                lo, hi = pts[start - 1], pts[start]
+                base = lo[0] + (hi[0] - lo[0]) * clamp((SAT_RH - lo[2]) / max(hi[2] - lo[2], 1))
+            if j + 1 == len(pts):
+                top, open_ = pts[j][0], True
+            else:
+                hi, nx = pts[j], pts[j + 1]
+                top = hi[0] + (nx[0] - hi[0]) * clamp((hi[2] - SAT_RH) / max(hi[2] - nx[2], 1))
+                open_ = False
+            out.append([round(base), round(top), open_])
+        j += 1
+    return out
+
+
 def valley_hour(h, i, ground):
-    """Etat de la couche dans la vallee a l'heure i, moyenne des modeles."""
-    per = []
-    for m in MODELS:
-        col = column(h, m, i)
-        if len(col) < 4:
-            continue
-        low = at(series(h, "cloud_cover_low", m), i) or 0
-        top, deep = cloud_top(col, ground, low)
-        per.append({"top": top, "deep": deep, "low": low,
-                    "mid": at(series(h, "cloud_cover_mid", m), i) or 0,
-                    "high": at(series(h, "cloud_cover_high", m), i) or 0})
-    if not per:
+    """Etat du ciel dans la vallee a l'heure i, sur la colonne moyenne des modeles.
+
+    top / deep : mer de nuages (couche partie du fond de vallee), sinon None.
+    layers : couches en altitude, qui ne touchent pas le fond (base, sommet, ouverte).
+    """
+    col = mean_column(h, i)
+    if len(col) < 4:
         return None
-    tops = [p["top"] for p in per if p["top"] is not None]
-    with_top = [p for p in per if p["top"] is not None]
-    n = len(per)
-    return {
-        # une couche n'est affichee que si au moins la moitie des modeles la voient
-        "top": round(sum(tops) / len(tops)) if tops and len(tops) * 2 >= n else None,
-        "deep": bool(with_top) and all(p["deep"] for p in with_top),
-        "low": round(sum(p["low"] for p in per) / n),
-        "mid": round(sum(p["mid"] for p in per) / n),
-        "high": round(sum(p["high"] for p in per) / n),
-    }
+    cover = {}
+    for k in ("cloud_cover_low", "cloud_cover_mid", "cloud_cover_high"):
+        v = [at(series(h, k, m), i) for m in MODELS]
+        v = [x for x in v if x is not None]
+        cover[k] = round(sum(v) / len(v)) if v else 0
+    layers = cloud_layers(col, ground)
+    sea = None
+    if layers and layers[0][0] <= ground + BASE_MAX and cover["cloud_cover_low"] >= 20:
+        sea = layers.pop(0)
+    elif layers and layers[0][0] <= ground + BASE_MAX:
+        layers.pop(0)  # humidite au sol sans nuages bas annonces : brume, on l'ignore
+    return {"top": sea[1] if sea else None, "deep": bool(sea and sea[2]), "layers": layers,
+            "low": cover["cloud_cover_low"], "mid": cover["cloud_cover_mid"], "high": cover["cloud_cover_high"]}
+
+
+def overlaps(a, b):
+    return a[0] <= b[1] and b[0] <= a[1]
+
+
+def smooth(arr):
+    """Retire ce qui n'apparait qu'une heure isolee (bruit des modeles)."""
+    out = []
+    for k, v in enumerate(arr):
+        if not v:
+            out.append(v)
+            continue
+        nb = [arr[j] for j in (k - 1, k + 1) if 0 <= j < len(arr) and arr[j]]
+        v = dict(v)
+        if v["top"] is not None and nb and all(n["top"] is None for n in nb):
+            v["top"], v["deep"] = None, False
+        v["layers"] = [l for l in v["layers"]
+                       if not nb or any(overlaps(l, m) for n in nb for m in n["layers"])]
+        out.append(v)
+    return out
 
 
 def timeline(cache, last_sunrise):
@@ -273,7 +334,7 @@ def timeline(cache, last_sunrise):
         h = data["hourly"]
         ground = data.get("elevation", 220)
         idx = {t: k for k, t in enumerate(h["time"])}
-        valleys[vid] = [valley_hour(h, idx[t], ground) if t in idx else None for t in hours]
+        valleys[vid] = smooth([valley_hour(h, idx[t], ground) if t in idx else None for t in hours])
     return {"hours": hours, "valleys": valleys}
 
 
