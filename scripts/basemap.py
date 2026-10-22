@@ -22,7 +22,10 @@ DOCS = ROOT / "docs"
 
 # Emprise de la carte : rapport largeur / hauteur en km = 354 / 240 (taille affichee).
 BBOX = {"lat0": 45.015, "lat1": 45.310, "lon0": 5.423, "lon1": 6.037}
-NX, NY = 90, 61          # grille d'environ 540 m
+NX, NY = 72, 49          # grille d'environ 680 m, 3528 points
+# L'API gratuite compte chaque point comme un appel : 600 par minute et 5000 par heure.
+# Par paquets de 100, on attend donc 11 s entre deux requetes (environ 7 min au total).
+PAUSE = 11
 WIDTH, HEIGHT = 354, 240  # taille affichee en px (rendu en x2)
 
 
@@ -38,17 +41,18 @@ def fetch_dem():
     for k in range(0, len(lats), 100):
         q = urllib.parse.urlencode({"latitude": ",".join(map(str, lats[k:k + 100])),
                                     "longitude": ",".join(map(str, lons[k:k + 100]))})
-        for attempt in range(4):
+        for attempt in range(6):
             try:
                 with urllib.request.urlopen("https://api.open-meteo.com/v1/elevation?" + q, timeout=60) as r:
                     z += json.load(r)["elevation"]
                 break
-            except Exception as e:  # limite de debit ou coupure : on patiente
-                if attempt == 3:
+            except Exception as e:  # limite de debit ou coupure : on attend la minute suivante
+                print(f"  requete {k // 100 + 1} refusee ({e}), nouvel essai dans 65 s", file=sys.stderr, flush=True)
+                if attempt == 5:
                     raise
-                time.sleep(10 * (attempt + 1))
-        time.sleep(1.2)
-        print(f"{min(k + 100, len(lats))}/{len(lats)}", file=sys.stderr)
+                time.sleep(65)
+        print(f"{min(k + 100, len(lats))}/{len(lats)}", file=sys.stderr, flush=True)
+        time.sleep(PAUSE)
     return {"bbox": BBOX, "nx": NX, "ny": NY, "source": "Copernicus DEM GLO-90 via Open-Meteo",
             "z": [round(v) for v in z]}
 

@@ -24,6 +24,9 @@ jobs:
         with:
           python-version: "3.12"
       - name: Fond de carte (une seule fois)
+        # environ 7 min au premier passage ; si ca echoue, la prevision passe quand meme
+        continue-on-error: true
+        timeout-minutes: 20
         run: |
           if [ ! -f docs/carte.png ] || [ ! -f docs/dem.json ]; then
             pip install --quiet numpy scipy matplotlib
