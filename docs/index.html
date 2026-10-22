@@ -3,212 +3,435 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-</head>
-<body>
 <title>Mer de nuages Grenoble</title>
-<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&display=swap">
 <style>
-/* Layout : une colonne façon carnet de terrain, verdict en tête, puis un panneau de balisage par sommet avec sa coupe verticale. */
+/* Carnet technique : papier millimétré, encre ardoise, nappe de nuages hachurée. */
 :root{
-  --bg:#EEF1F4; --panel:#FFFFFF; --ink:#1C2733; --muted:#5D6B78; --line:#D5DCE3;
-  --fog:#C9D3DD; --fog-ink:#7F8E9C; --sign:#F2C230; --sign-ink:#1C1A12;
-  --dawn:#D9733F; --good:#2F7D5B; --mid:#B9861E; --bad:#9AA6B1;
-  --f-sign:"Barlow Condensed","Arial Narrow",sans-serif;
-  --f-body:"Atkinson Hyperlegible",system-ui,sans-serif;
-  --f-data:"IBM Plex Mono",ui-monospace,monospace;
+  --bg:#FBFBF8; --ink:#1F2328; --ink2:#3E4A58; --muted:#6A717A; --line:#D9DCD3; --line2:#E3E6DE; --grid:#ECEEE7;
+  --rock:#2F353C; --rock2:#3B424A; --fog:#E1E7EE; --fog-hatch:#C3CDD8;
+  --good:#15803D; --mid:#A16207; --bad:#7A8088; --warn:#B42318; --sun:#C2410C;
+  --f-mono:"IBM Plex Mono",ui-monospace,monospace;
+  --f-cond:"IBM Plex Sans Condensed","Arial Narrow",sans-serif;
   color-scheme:light;
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#0F1720; --panel:#17212C; --ink:#E6ECF1; --muted:#93A2B0; --line:#26323F;
-  --fog:#3A4856; --fog-ink:#8C9BA9; --sign:#E8B92C; --sign-ink:#17140A;
-  --dawn:#F08A55; --good:#5BB88C; --mid:#D7A643; --bad:#5E6B78; color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#0F1720; --panel:#17212C; --ink:#E6ECF1; --muted:#93A2B0; --line:#26323F;
-  --fog:#3A4856; --fog-ink:#8C9BA9; --sign:#E8B92C; --sign-ink:#17140A;
-  --dawn:#F08A55; --good:#5BB88C; --mid:#D7A643; --bad:#5E6B78; color-scheme:dark}
 *{box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font:16px/1.5 var(--f-body);margin:0}
-.wrap{max-width:720px;margin:0 auto;padding-block:28px 48px;
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
-  display:flex;flex-direction:column;gap:28px}
-header{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
-h1{font:700 1.9rem/1 var(--f-sign);letter-spacing:.02em;text-transform:uppercase;margin:0}
-.meta{font:500 .8rem var(--f-data);color:var(--muted)}
-.badge{font:500 .72rem var(--f-data);color:var(--dawn);border:1px solid currentColor;border-radius:4px;padding:2px 6px;margin-left:8px;text-transform:uppercase;letter-spacing:.06em}
-
-.tabs{display:flex;gap:8px;flex-wrap:wrap}
-.tabs button{font:600 1rem var(--f-sign);letter-spacing:.04em;text-transform:uppercase;background:transparent;color:var(--muted);
-  border:1px solid var(--line);border-radius:6px;padding:6px 14px;cursor:pointer}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:13px/1.45 var(--f-mono)}
+.wrap{max-width:420px;margin:0 auto;padding:20px max(16px,env(safe-area-inset-right)) 40px max(16px,env(safe-area-inset-left));display:flex;flex-direction:column;gap:16px}
+header{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+h1{font:700 18px/1.2 var(--f-cond);margin:0}
+h2{font:700 15px/1.2 var(--f-cond);margin:0}
+.meta{font-size:11px;color:var(--muted)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tabs button{font:12px var(--f-mono);min-height:44px;padding:0 14px;border-radius:3px;border:1px solid var(--line);background:transparent;color:var(--ink);cursor:pointer}
 .tabs button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-.tabs button:focus-visible,summary:focus-visible{outline:2px solid var(--dawn);outline-offset:2px}
+button:focus-visible,summary:focus-visible{outline:2px solid var(--sun);outline-offset:2px}
 
-.verdict{display:grid;grid-template-columns:auto 1fr;gap:6px 20px;align-items:center}
-.big{font:700 5.5rem/0.85 var(--f-sign);font-variant-numeric:tabular-nums;grid-row:span 2}
-.big small{font-size:1.6rem;color:var(--muted);font-weight:500}
-.verdict h2{font:700 1.6rem/1.1 var(--f-sign);text-transform:uppercase;letter-spacing:.02em;margin:0;text-wrap:balance}
-.verdict p{margin:0;color:var(--muted);max-width:52ch}
-.tone-good{color:var(--good)} .tone-mid{color:var(--mid)} .tone-bad{color:var(--bad)}
+.map{position:relative;width:100%;aspect-ratio:354/240;border:1px solid var(--line);overflow:hidden;
+  background-color:var(--bg);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:100% 30px,30px 100%}
+.map img,.map canvas{position:absolute;inset:0;width:100%;height:100%}
+.pin{position:absolute;width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:10px solid var(--ink);transform:translate(-50%,-100%)}
+.tag{position:absolute;transform:translateY(-100%);font-size:10px;line-height:1.3;background:var(--bg);padding:1px 4px;border:1px solid;white-space:nowrap}
+.tag b{font-weight:600}
+.city{position:absolute;width:6px;height:6px;border-radius:50%;background:var(--ink);transform:translate(-50%,-50%)}
+.city-label{position:absolute;font-size:10px;font-weight:600;background:rgba(230,235,241,.9);padding:0 3px;transform:translate(6px,-50%)}
+.corner{position:absolute;bottom:6px;font-size:9px;background:var(--bg);padding:1px 4px;border:1px solid var(--line)}
+.legend{display:flex;justify-content:space-between;gap:8px;font-size:9px;color:var(--muted);flex-wrap:wrap;margin-top:-10px}
+.swatch{display:inline-block;width:14px;height:9px;vertical-align:-1px;margin-right:5px;background-color:var(--fog);background-image:repeating-linear-gradient(45deg,transparent 0 3px,#B9C4D0 3px 4px);border:1px dashed var(--ink2)}
 
-.list{display:flex;flex-direction:column;gap:12px}
-.row{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px;display:grid;
-  grid-template-columns:56px 1fr auto;gap:14px;align-items:center}
-.sign{display:inline-flex;flex-direction:column;background:var(--sign);color:var(--sign-ink);border-radius:3px;
-  padding:4px 10px 3px;font-family:var(--f-sign);line-height:1.05;justify-self:start;max-width:100%}
-.sign b{font-weight:700;font-size:1.15rem;text-transform:uppercase;letter-spacing:.02em}
-.sign span{font-weight:500;font-size:.85rem}
-.info{min-width:0;display:flex;flex-direction:column;gap:6px}
-.sub{font-size:.85rem;color:var(--muted)}
-.score{text-align:right}
-.score b{display:block;font:700 2.4rem/1 var(--f-sign);font-variant-numeric:tabular-nums}
-.score span{font:500 .7rem var(--f-data);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
-.gauge svg{display:block}
-.chips{display:flex;flex-wrap:wrap;gap:6px 14px;font:400 .78rem var(--f-data);color:var(--muted)}
-.chips em{font-style:normal;color:var(--ink)}
-details{grid-column:1/-1;border-top:1px solid var(--line);padding-top:8px}
-summary{cursor:pointer;font:500 .78rem var(--f-data);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
-table{border-collapse:collapse;width:100%;font:400 .8rem var(--f-data);margin-top:8px;font-variant-numeric:tabular-nums}
-th,td{text-align:right;padding:4px 6px;border-bottom:1px solid var(--line)}
-th:first-child,td:first-child{text-align:left}
-th{color:var(--muted);font-weight:500}
+.chart{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+.chart svg{display:block;width:100%;height:auto}
+
+.peak{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--ink);padding-top:10px}
+.peak-head{display:flex;justify-content:space-between;align-items:flex-end;gap:10px}
+.peak-name{font:700 20px/1.15 var(--f-cond)}
+.peak-sub{font-size:11px;color:var(--muted)}
+.score{font:700 44px/.85 var(--f-cond);font-variant-numeric:tabular-nums}
+.gauge{position:relative;height:22px;margin-top:6px;background:#F1F2EC;border:1px solid var(--line)}
+.gauge .fog{position:absolute;left:0;top:0;bottom:0;background-color:#DDE3EA;background-image:repeating-linear-gradient(135deg,transparent 0 5px,#C8D1DB 5px 6px)}
+.gauge .alt{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink)}
+.gauge .max{position:absolute;right:0;top:-15px;font-size:9px;color:var(--muted)}
+.gauge-txt{font-size:10px;color:var(--muted);margin-top:-4px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;font-size:10px;color:var(--muted)}
+.stats div{display:flex;flex-direction:column}
+.stats b{color:var(--ink);font-weight:600;font-size:14px;font-variant-numeric:tabular-nums}
+details{font-size:10px;color:var(--muted)}
+summary{cursor:pointer;min-height:28px;display:flex;align-items:center}
 .tbl{overflow-x:auto}
-
-.method{font-size:.9rem;color:var(--muted);display:flex;flex-direction:column;gap:8px;max-width:65ch}
-.method h3{font:700 1.1rem var(--f-sign);text-transform:uppercase;letter-spacing:.04em;color:var(--ink);margin:0}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+th,td{text-align:right;padding:3px 4px;border-bottom:1px solid var(--line2);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{font-weight:500}
+.method{font-size:11px;color:var(--ink2);display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:14px}
 .method p{margin:0}
-@media (max-width:480px){
-  .row{grid-template-columns:44px 1fr auto;gap:10px}
-  .big{font-size:4.2rem}
-}
-@media (prefers-reduced-motion:no-preference){.row{transition:border-color .2s}.row:hover{border-color:var(--fog-ink)}}
+.note{font-size:11px;color:var(--muted)}
+.c-good{color:var(--good)}.c-mid{color:var(--mid)}.c-bad{color:var(--bad)}
 </style>
-
+</head>
+<body>
 <div class="wrap">
   <header>
-    <h1>Mer de nuages</h1>
-    <div class="meta" id="meta">Chargement des prévisions</div>
+    <h1 id="title">Mer de nuages</h1>
+    <div class="meta" id="meta">chargement</div>
   </header>
 
   <nav class="tabs" id="tabs" aria-label="Jour"></nav>
 
-  <section class="verdict" id="verdict" aria-live="polite"></section>
+  <section aria-label="Carte">
+    <div class="map" id="map">
+      <img id="basemap" src="carte.png" alt="" onerror="this.remove()">
+      <canvas id="fog" aria-hidden="true"></canvas>
+    </div>
+  </section>
+  <div class="legend" id="legend"></div>
 
-  <section class="list" id="list"></section>
+  <section style="display:flex;flex-direction:column;gap:6px">
+    <h2>Hauteurs comparées</h2>
+    <div class="chart" id="chart"></div>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:14px">
+    <h2>Sommets</h2>
+    <div id="peaks" style="display:flex;flex-direction:column;gap:14px"></div>
+  </section>
 
   <section class="method">
-    <h3>Comment l'indice est calculé</h3>
-    <p>Pour chaque sommet, on regarde la colonne d'air de la vallée qu'il domine à l'heure du lever : AROME (Météo-France) et ICON-D2 (DWD), niveaux 1000 à 700 hPa.</p>
-    <p>L'indice de mer combine la présence de nuages bas, l'altitude du sommet de la couche sous le sommet visé (avec marge), l'air sec au sommet, la force de l'inversion, le vent en altitude et la situation de la veille au soir. L'indice final pondère ensuite par le ciel au dessus (nuages moyens et hauts), qui décide si le lever est visible.</p>
-    <p>Ce n'est pas encore une probabilité calibrée. Les modèles captent mal les couches de 200 à 300 m : note tes sorties pour qu'on ajuste les seuils.</p>
+    <h2>Comment c'est calculé</h2>
+    <p>Pour chaque sommet, le script lit la colonne d'air de la vallée qu'il domine à l'heure du lever : modèles AROME (Météo France) et ICON-D2 (DWD), niveaux de 1000 à 700 hPa, via Open-Meteo.</p>
+    <p>L'indice combine la présence de nuages bas, l'altitude du sommet de la couche sous le sommet visé, l'air sec au sommet, l'inversion, le vent et la situation de la veille, puis le ciel au dessus pour voir le lever.</p>
+    <p>Sur la carte, la nappe est dessinée là où le relief réel (Copernicus DEM) est sous l'altitude prévue de la couche, en partant du fond de chaque vallée. Ce n'est pas encore une probabilité calibrée.</p>
   </section>
 </div>
 
 <script>
-const EXAMPLE = {"generated":"2026-10-22T15:00+00:00","example":true,"models":["AROME","ICON-D2"],"days":["2026-10-23","2026-10-24"],"summits":[
-{"id":"rachais","name":"Mont Rachais","massif":"Chartreuse","alt":1046,"valley":"Cuvette grenobloise","days":[
- {"date":"2026-10-23","sunrise":"08:11","sea":31,"sky":88,"worth":28,"agreement":82,"top":1010,"persist":40,"models":{"AROME":{"sea":38,"sky":90,"top":990,"wind":8,"rh_summit":84,"inversion":4.1,"low":95},"ICON-D2":{"sea":24,"sky":86,"top":1030,"wind":10,"rh_summit":88,"inversion":3.2,"low":90}}},
- {"date":"2026-10-24","sunrise":"08:12","sea":12,"sky":40,"worth":7,"agreement":90,"top":null,"persist":null,"models":{"AROME":{"sea":14,"sky":42,"top":null,"wind":18,"rh_summit":70,"inversion":0.5,"low":30},"ICON-D2":{"sea":10,"sky":38,"top":null,"wind":20,"rh_summit":72,"inversion":0.2,"low":25}}}]},
-{"id":"eynard","name":"Fort Saint Eynard","massif":"Chartreuse","alt":1338,"valley":"Grésivaudan","days":[
- {"date":"2026-10-23","sunrise":"08:10","sea":72,"sky":88,"worth":66,"agreement":78,"top":1020,"persist":70,"models":{"AROME":{"sea":83,"sky":90,"top":1000,"wind":9,"rh_summit":52,"inversion":7.8,"low":97},"ICON-D2":{"sea":61,"sky":86,"top":1040,"wind":11,"rh_summit":60,"inversion":6.1,"low":92}}},
- {"date":"2026-10-24","sunrise":"08:11","sea":10,"sky":40,"worth":6,"agreement":92,"top":null,"persist":null,"models":{"AROME":{"sea":12,"sky":42,"top":null,"wind":18,"rh_summit":66,"inversion":0.8,"low":30},"ICON-D2":{"sea":8,"sky":38,"top":null,"wind":22,"rh_summit":70,"inversion":0.1,"low":25}}}]},
-{"id":"moucherotte","name":"Moucherotte","massif":"Vercors","alt":1901,"valley":"Cuvette grenobloise","days":[
- {"date":"2026-10-23","sunrise":"08:11","sea":88,"sky":90,"worth":84,"agreement":90,"top":1010,"persist":80,"models":{"AROME":{"sea":93,"sky":92,"top":990,"wind":12,"rh_summit":31,"inversion":11.2,"low":95},"ICON-D2":{"sea":83,"sky":88,"top":1030,"wind":14,"rh_summit":38,"inversion":9.6,"low":90}}},
- {"date":"2026-10-24","sunrise":"08:12","sea":11,"sky":40,"worth":7,"agreement":92,"top":null,"persist":null,"models":{"AROME":{"sea":12,"sky":42,"top":null,"wind":24,"rh_summit":60,"inversion":0.4,"low":30},"ICON-D2":{"sea":9,"sky":38,"top":null,"wind":26,"rh_summit":64,"inversion":0.0,"low":25}}}]},
-{"id":"chamechaude","name":"Chamechaude","massif":"Chartreuse","alt":2082,"valley":"Grésivaudan","days":[
- {"date":"2026-10-23","sunrise":"08:10","sea":85,"sky":86,"worth":79,"agreement":88,"top":1020,"persist":78,"models":{"AROME":{"sea":91,"sky":88,"top":1000,"wind":13,"rh_summit":30,"inversion":11.0,"low":97},"ICON-D2":{"sea":79,"sky":84,"top":1040,"wind":15,"rh_summit":36,"inversion":9.2,"low":92}}},
- {"date":"2026-10-24","sunrise":"08:11","sea":9,"sky":40,"worth":6,"agreement":94,"top":null,"persist":null,"models":{"AROME":{"sea":10,"sky":42,"top":null,"wind":26,"rh_summit":58,"inversion":0.3,"low":30},"ICON-D2":{"sea":8,"sky":38,"top":null,"wind":28,"rh_summit":62,"inversion":0.0,"low":25}}}]},
-{"id":"moucherolle","name":"Grande Moucherolle","massif":"Vercors","alt":2284,"valley":"Cuvette grenobloise","days":[
- {"date":"2026-10-23","sunrise":"08:11","sea":86,"sky":90,"worth":82,"agreement":90,"top":1010,"persist":80,"models":{"AROME":{"sea":91,"sky":92,"top":990,"wind":15,"rh_summit":28,"inversion":10.8,"low":95},"ICON-D2":{"sea":81,"sky":88,"top":1030,"wind":17,"rh_summit":34,"inversion":9.1,"low":90}}},
- {"date":"2026-10-24","sunrise":"08:12","sea":9,"sky":40,"worth":6,"agreement":94,"top":null,"persist":null,"models":{"AROME":{"sea":10,"sky":42,"top":null,"wind":28,"rh_summit":58,"inversion":0.2,"low":30},"ICON-D2":{"sea":8,"sky":38,"top":null,"wind":30,"rh_summit":60,"inversion":0.0,"low":25}}}]},
-{"id":"veymont","name":"Grand Veymont","massif":"Vercors","alt":2341,"valley":"Trièves","days":[
- {"date":"2026-10-23","sunrise":"08:10","sea":58,"sky":84,"worth":51,"agreement":64,"top":880,"persist":45,"models":{"AROME":{"sea":70,"sky":86,"top":860,"wind":16,"rh_summit":30,"inversion":8.0,"low":80},"ICON-D2":{"sea":46,"sky":82,"top":900,"wind":18,"rh_summit":35,"inversion":6.4,"low":60}}},
- {"date":"2026-10-24","sunrise":"08:11","sea":8,"sky":40,"worth":5,"agreement":94,"top":null,"persist":null,"models":{"AROME":{"sea":9,"sky":42,"top":null,"wind":30,"rh_summit":56,"inversion":0.1,"low":25},"ICON-D2":{"sea":7,"sky":38,"top":null,"wind":32,"rh_summit":58,"inversion":0.0,"low":20}}}]}
-]};
-
 const $ = s => document.querySelector(s);
-const hhmm = t => { const [h,m] = t.split(":"); return `${+h}h${m}`; };
-const dayLabel = (iso, i) => {
-  const d = new Date(iso + "T12:00");
-  const name = d.toLocaleDateString("fr-FR",{weekday:"long", day:"numeric", month:"long"});
-  return name;
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const hhmm = t => { const [h, m] = t.split(':'); return `${+h}h${m}`; };
+const tone = v => v >= 70 ? 'good' : v >= 45 ? 'mid' : 'bad';
+const COLOR = { good: '#15803D', mid: '#A16207', bad: '#7A8088' };
+const avg = a => { const v = a.filter(x => x != null); return v.length ? v.reduce((s, x) => s + x, 0) / v.length : null; };
+const dayLabel = iso => {
+  const d = new Date(iso + 'T12:00');
+  const wd = d.toLocaleDateString('fr-FR', { weekday: 'short' });
+  return `${wd} ${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}`;
 };
-const shortDay = (iso) => new Date(iso+"T12:00").toLocaleDateString("fr-FR",{weekday:"short", day:"numeric"});
-const isoLocal = d => d.toLocaleDateString("sv-SE");
 const relDay = iso => {
-  const t = new Date(); const tm = new Date(Date.now() + 864e5);
-  return iso === isoLocal(t) ? "Ce matin" : iso === isoLocal(tm) ? "Demain matin" : shortDay(iso);
+  const today = new Date().toLocaleDateString('sv-SE');
+  const tom = new Date(Date.now() + 864e5).toLocaleDateString('sv-SE');
+  return iso === today ? 'ce matin' : iso === tom ? 'demain' : dayLabel(iso);
 };
-const tone = v => v >= 70 ? "good" : v >= 45 ? "mid" : "bad";
-const verdictText = v => v >= 75 ? "Ça vaut le réveil" : v >= 55 ? "À tenter si tu es motivé" : v >= 35 ? "Peu probable" : "Reste couché";
 
-let data, dayIdx = 0;
+// Silhouettes propres à chaque sommet : [u de -1 à 1, part de la hauteur]
+const SHAPES = {
+  veymont:     [[-1,0],[-.82,.3],[-.62,.55],[-.38,.76],[-.12,.9],[.12,.98],[.24,1],[.32,.93],[.4,.62],[.55,.4],[.78,.18],[1,0]],
+  moucherolle: [[-1,0],[-.8,.32],[-.58,.62],[-.42,.8],[-.3,.76],[-.12,.96],[0,1],[.14,.88],[.3,.92],[.46,.74],[.66,.45],[.84,.2],[1,0]],
+  chamechaude: [[-1,0],[-.78,.2],[-.52,.4],[-.32,.62],[-.16,.88],[-.04,1],[.08,.97],[.28,.78],[.5,.55],[.74,.3],[1,0]],
+  moucherotte: [[-1,0],[-.82,.28],[-.62,.55],[-.4,.78],[-.18,.93],[0,1],[.18,.98],[.34,.86],[.44,.6],[.56,.38],[.78,.18],[1,0]],
+  eynard:      [[-1,0],[-.8,.3],[-.6,.58],[-.42,.8],[-.26,.95],[-.12,1],[.26,1],[.32,.95],[.38,.62],[.52,.42],[.76,.2],[1,0]],
+  rachais:     [[-1,0],[-.75,.3],[-.48,.66],[-.22,.92],[0,1],[.24,.92],[.5,.66],[.76,.32],[1,0]],
+  _default:    [[-1,0],[-.6,.45],[-.25,.85],[0,1],[.25,.85],[.6,.45],[1,0]]
+};
+const DEFAULT_BBOX = { lat0: 45.015, lat1: 45.31, lon0: 5.423, lon1: 6.037 };
 
-function gauge(alt, top) {
-  // coupe verticale : 200 m (fond de vallée) à 2500 m
-  const H = 64, W = 44, lo = 200, hi = 2500;
-  const y = z => H - 4 - (Math.min(Math.max(z,lo),hi) - lo) / (hi - lo) * (H - 8);
-  const cloud = top ? `<rect x="2" y="${y(top)}" width="${W-4}" height="${y(lo)-y(top)}" rx="3" fill="var(--fog)"/>
-    <line x1="2" x2="${W-2}" y1="${y(top)}" y2="${y(top)}" stroke="var(--fog-ink)" stroke-dasharray="2 2"/>` : "";
-  return `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Sommet à ${alt} m, ${top ? "mer vers " + top + " m" : "pas de couche basse"}">
-    <rect x="1" y="1" width="${W-2}" height="${H-2}" rx="5" fill="none" stroke="var(--line)"/>
-    ${cloud}
-    <path d="M${W/2-9} ${y(alt)+8} L${W/2} ${y(alt)} L${W/2+9} ${y(alt)+8} Z" fill="var(--ink)"/>
-  </svg>`;
+let DATA = null, DEM = null, dayIdx = 0;
+
+function dayRows(date) {
+  return DATA.summits.map(s => {
+    const d = s.days.find(x => x.date === date);
+    if (!d) return null;
+    const m = Object.values(d.models || {}).filter(Boolean);
+    return {
+      s, d, score: d.worth, top: d.top,
+      hr: avg(m.map(x => x.rh_summit)), wind: avg(m.map(x => x.wind)),
+      marge: d.top == null ? null : s.alt - d.top
+    };
+  }).filter(Boolean);
+}
+
+function renderTabs() {
+  $('#tabs').innerHTML = DATA.days.map((iso, i) =>
+    `<button type="button" aria-pressed="${i === dayIdx}" data-i="${i}">${relDay(iso)}</button>`).join('');
+  $('#tabs').querySelectorAll('button').forEach(b => b.onclick = () => { dayIdx = +b.dataset.i; render(); });
+}
+
+/* ---------- Carte ---------- */
+function project(lat, lon, bb) {
+  return { x: (lon - bb.lon0) / (bb.lon1 - bb.lon0), y: (bb.lat1 - lat) / (bb.lat1 - bb.lat0) };
+}
+
+function renderMap(rows) {
+  const bb = DEM ? DEM.bbox : DEFAULT_BBOX;
+  const map = $('#map');
+  map.querySelectorAll('.pin,.tag,.city,.city-label,.corner').forEach(e => e.remove());
+  const out = [];
+  rows.forEach(r => {
+    const p = project(r.s.lat, r.s.lon, bb);
+    const t = tone(r.score);
+    if (p.x < 0 || p.x > 1 || p.y < 0 || p.y > 1) { out.push(r); return; }
+    const pin = document.createElement('div');
+    pin.className = 'pin'; pin.style.left = p.x * 100 + '%'; pin.style.top = p.y * 100 + '%';
+    const tag = document.createElement('div');
+    tag.className = 'tag'; tag.style.borderColor = COLOR[t];
+    tag.style.top = `calc(${p.y * 100}% + 2px)`;
+    if (r.s.label === 'left') tag.style.right = `calc(${(1 - p.x) * 100}% + 9px)`;
+    else tag.style.left = `calc(${p.x * 100}% + 9px)`;
+    tag.innerHTML = `<b class="c-${t}">${r.score}</b> ${esc(shortName(r.s.name))}`;
+    map.append(pin, tag);
+  });
+  const g = DATA.valleys && DATA.valleys.grenoble;
+  if (g) {
+    const p = project(g.lat, g.lon, bb);
+    const c = document.createElement('div'); c.className = 'city'; c.style.left = p.x * 100 + '%'; c.style.top = p.y * 100 + '%';
+    const l = document.createElement('div'); l.className = 'city-label'; l.style.left = p.x * 100 + '%'; l.style.top = p.y * 100 + '%'; l.textContent = 'Grenoble';
+    map.append(c, l);
+  }
+  if (out.length) {
+    const c = document.createElement('div'); c.className = 'corner'; c.style.left = '6px';
+    c.innerHTML = out.map(r => `<b class="c-${tone(r.score)}">${r.score}</b> ${esc(shortName(r.s.name))} ↓`).join(' · ');
+    map.append(c);
+  }
+  const sc = document.createElement('div'); sc.className = 'corner'; sc.style.right = '6px';
+  const kmWide = (bb.lon1 - bb.lon0) * 111.32 * Math.cos((bb.lat0 + bb.lat1) / 2 * Math.PI / 180);
+  sc.innerHTML = `<span style="display:inline-block;width:${(5 / kmWide * map.clientWidth).toFixed(0)}px;height:2px;background:var(--ink);vertical-align:middle;margin-right:4px"></span>5 km`;
+  map.append(sc);
+  drawFog(rows, bb);
+
+  const tops = valleyTops(rows);
+  const vals = [...new Set(Object.values(tops).filter(v => v != null))].sort((a, b) => a - b);
+  const src = DEM ? 'relief Copernicus' : 'relief non chargé';
+  let txt;
+  if (!vals.length) txt = 'pas de couche basse prévue au lever';
+  else if (vals[0] > 2500) txt = 'couche épaisse au lever : sommets dans les nuages';
+  else txt = `<span class="swatch"></span>nuages au lever : ${vals.map(v => v + ' m').join(', ')}`;
+  $('#legend').innerHTML = `<span>${txt}</span><span>${src}</span>`;
+}
+
+function shortName(n) {
+  return n.replace(/^(Mont|Grand|Grande|Fort Saint) /, '');
+}
+
+function valleyTops(rows) {
+  const tops = {};
+  rows.forEach(r => { if (!(r.s.valley_id in tops) || tops[r.s.valley_id] == null) tops[r.s.valley_id] = r.top; });
+  return tops;
+}
+
+function drawFog(rows, bb) {
+  const cv = $('#fog'), map = $('#map');
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const W = Math.round(map.clientWidth * dpr), H = Math.round(map.clientHeight * dpr);
+  cv.width = W; cv.height = H;
+  const ctx = cv.getContext('2d');
+  ctx.clearRect(0, 0, W, H);
+  if (!DEM || !DATA.valleys) return;
+  const { nx, ny, z } = DEM;
+  const tops = valleyTops(rows);
+  // champ F : > 0 là où il y a des nuages (relief sous la couche, relié au fond de vallée)
+  const F = new Float32Array(nx * ny).fill(-9999);
+  let any = false;
+  for (const [vid, top] of Object.entries(tops)) {
+    const v = DATA.valleys[vid];
+    if (top == null || !v) continue;
+    const p = project(v.lat, v.lon, bb);
+    if (p.x < 0 || p.x > 1 || p.y < 0 || p.y > 1) continue;
+    let si = Math.round(p.x * (nx - 1)), sj = Math.round(p.y * (ny - 1));
+    // départ au point le plus bas autour de la vallée
+    let best = sj * nx + si;
+    for (let dj = -2; dj <= 2; dj++) for (let di = -2; di <= 2; di++) {
+      const i = si + di, j = sj + dj;
+      if (i >= 0 && j >= 0 && i < nx && j < ny && z[j * nx + i] < z[best]) best = j * nx + i;
+    }
+    if (z[best] >= top) continue;
+    const seen = new Uint8Array(nx * ny), stack = [best];
+    seen[best] = 1;
+    while (stack.length) {
+      const k = stack.pop(), i = k % nx, j = (k - i) / nx;
+      for (const [di, dj] of [[1,0],[-1,0],[0,1],[0,-1]]) {
+        const a = i + di, b = j + dj;
+        if (a < 0 || b < 0 || a >= nx || b >= ny) continue;
+        const q = b * nx + a;
+        if (!seen[q] && z[q] < top) { seen[q] = 1; stack.push(q); }
+      }
+    }
+    for (let k = 0; k < nx * ny; k++) {
+      const f = seen[k] ? top - z[k] : Math.min(top - z[k], -1);
+      if (f > F[k]) F[k] = f;
+    }
+    any = true;
+  }
+  if (!any) return;
+  const at = (gx, gy) => {
+    const i = Math.min(Math.floor(gx), nx - 2), j = Math.min(Math.floor(gy), ny - 2);
+    const fx = gx - i, fy = gy - j, k = j * nx + i;
+    return F[k] * (1 - fx) * (1 - fy) + F[k + 1] * fx * (1 - fy) + F[k + nx] * (1 - fx) * fy + F[k + nx + 1] * fx * fy;
+  };
+  const img = ctx.createImageData(W, H), px = img.data;
+  for (let y = 0; y < H; y++) {
+    const gy = y / (H - 1) * (ny - 1);
+    for (let x = 0; x < W; x++) {
+      if (at(x / (W - 1) * (nx - 1), gy) > 0) {
+        const o = (y * W + x) * 4;
+        px[o] = 230; px[o + 1] = 235; px[o + 2] = 241; px[o + 3] = 238;
+      }
+    }
+  }
+  ctx.putImageData(img, 0, 0);
+  // hachures dans la nappe seulement
+  ctx.save();
+  ctx.globalCompositeOperation = 'source-atop';
+  ctx.strokeStyle = '#B9C4D0'; ctx.lineWidth = 1 * dpr;
+  ctx.beginPath();
+  for (let i = -H; i < W; i += 7 * dpr) { ctx.moveTo(i, H); ctx.lineTo(i + H, 0); }
+  ctx.stroke();
+  ctx.restore();
+  // contour pointillé (carrés marchants sur F = 0)
+  const sx = (W - 1) / (nx - 1), sy = (H - 1) / (ny - 1);
+  ctx.strokeStyle = '#3E4A58'; ctx.lineWidth = 1 * dpr; ctx.setLineDash([3 * dpr, 2 * dpr]);
+  ctx.beginPath();
+  const lerp = (a, b) => a / (a - b);
+  for (let j = 0; j < ny - 1; j++) for (let i = 0; i < nx - 1; i++) {
+    const k = j * nx + i, a = F[k], b = F[k + 1], c = F[k + nx + 1], d = F[k + nx];
+    const pts = [];
+    if ((a > 0) !== (b > 0)) pts.push([i + lerp(a, b), j]);
+    if ((b > 0) !== (c > 0)) pts.push([i + 1, j + lerp(b, c)]);
+    if ((d > 0) !== (c > 0)) pts.push([i + lerp(d, c), j + 1]);
+    if ((a > 0) !== (d > 0)) pts.push([i, j + lerp(a, d)]);
+    for (let n = 0; n + 1 < pts.length; n += 2) {
+      ctx.moveTo(pts[n][0] * sx, pts[n][1] * sy);
+      ctx.lineTo(pts[n + 1][0] * sx, pts[n + 1][1] * sy);
+    }
+  }
+  ctx.stroke();
+}
+
+/* ---------- Hauteurs comparées ---------- */
+function renderChart(rows) {
+  const list = rows.slice().sort((a, b) => b.s.alt - a.s.alt);
+  const N = list.length, W = 354, B = 400, step = W / N, hw = step * 0.8;
+  const maxAlt = Math.max(...list.map(r => r.s.alt));
+  const scaleMax = Math.max(2500, Math.ceil((maxAlt + 100) / 500) * 500);
+  const k = B / scaleMax;
+  const Y = z => B - Math.min(z, scaleMax * 1.07) * k;
+  let svg = `<svg viewBox="0 -30 ${W} 470" role="img" aria-label="Sommets à l'échelle avec l'altitude prévue de la couche de nuages">
+    <defs><pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="7" height="7" fill="#E1E7EE"/><line x1="0" y1="0" x2="0" y2="7" stroke="#C3CDD8" stroke-width="1.2"/></pattern></defs>`;
+  for (let a = 500; a < scaleMax; a += 500) {
+    svg += `<line x1="0" x2="${W}" y1="${Y(a)}" y2="${Y(a)}" stroke="#E6E8E1"/>`;
+    if (a >= 1500) svg += `<text x="${W - 2}" y="${Y(a) - 4}" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="9" fill="#6A717A" text-anchor="end">${a}${a === scaleMax - 500 ? ' m' : ''}</text>`;
+  }
+  list.forEach((r, i) => {
+    const cx = step * (i + .5), H = r.s.alt * k;
+    const pts = (SHAPES[r.s.id] || SHAPES._default).map(([u, f]) => `${(cx + u * hw).toFixed(1)},${(B - f * H).toFixed(1)}`).join(' ');
+    svg += `<polygon points="${pts}" fill="${i % 2 ? '#2F353C' : '#3B424A'}" stroke="#FBFBF8" stroke-width="1.2"/>`;
+  });
+  // nappe par colonne (chaque sommet a sa vallée)
+  let line = [], labelled = new Set(), bandLabels = '';
+  list.forEach((r, i) => {
+    const x0 = step * i, x1 = step * (i + 1);
+    if (r.top == null) { if (line.length) { svg += polyline(line); line = []; } return; }
+    const y = Y(r.top);
+    svg += `<rect x="${x0}" y="${y}" width="${step}" height="${B - y}" fill="url(#hatch)" opacity=".95"/>`;
+    line.push([x0, y], [x1, y]);
+    const key = r.top > scaleMax ? 'haut' : r.top;
+    if (!labelled.has(key)) {
+      labelled.add(key);
+      const txt = r.top > scaleMax ? `couche épaisse, au dessus de ${scaleMax} m` : `${r.top} m`;
+      bandLabels += `<text x="${r.top > scaleMax ? 4 : x0 + 4}" y="${r.top > scaleMax ? B - 8 : Math.min(y + 13, B - 4)}" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="9" fill="#3E4A58">${txt}</text>`;
+    }
+  });
+  if (line.length) svg += polyline(line);
+  svg += bandLabels;
+  // étiquettes
+  list.forEach((r, i) => {
+    const cx = step * (i + .5), apex = B - r.s.alt * k, t = tone(r.score);
+    let lift = 0;
+    if (r.marge != null && r.marge < 150) {
+      const txt = r.marge > 0 ? `+${r.marge}` : 'noyé';
+      svg += `<text x="${cx}" y="${apex - 5}" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10" fill="#B42318" text-anchor="middle">${txt}</text>`;
+      lift = 13;
+    } else if (r.marge != null) {
+      const yTop = Y(r.top);
+      svg += `<text x="${cx}" y="${yTop - 8}" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="${step < 60 ? 9 : 10}" fill="#FBFBF8" text-anchor="middle">+${r.marge}</text>`;
+    }
+    svg += `<text x="${cx}" y="${apex - 20 - lift}" font-family="IBM Plex Sans Condensed, Arial Narrow, sans-serif" font-weight="700" font-size="17" fill="${COLOR[t]}" text-anchor="middle">${r.score}</text>`;
+    svg += `<text x="${cx}" y="${apex - 8 - lift}" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="9" fill="#6A717A" text-anchor="middle">${r.s.alt}</text>`;
+    const nm = shortName(r.s.name), fit = nm.length > 9 ? ` textLength="${(step - 6).toFixed(0)}" lengthAdjust="spacingAndGlyphs"` : '';
+    svg += `<text x="${cx}" y="416" font-family="IBM Plex Sans Condensed, Arial Narrow, sans-serif" font-weight="600" font-size="10" fill="#1F2328" text-anchor="middle"${fit}>${esc(nm)}</text>`;
+    svg += `<text x="${cx}" y="430" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="8" fill="#6A717A" text-anchor="middle">${esc(r.s.massif)}</text>`;
+  });
+  $('#chart').innerHTML = svg + '</svg>';
+}
+const polyline = pts => `<polyline fill="none" stroke="#3E4A58" stroke-dasharray="3 3" points="${pts.map(p => p.join(',')).join(' ')}"/>`;
+
+/* ---------- Sommets ---------- */
+function renderPeaks(rows) {
+  const list = rows.slice().sort((a, b) => b.score - a.score || b.s.alt - a.s.alt);
+  $('#peaks').innerHTML = list.map(r => {
+    const t = tone(r.score);
+    const gmax = Math.max(2500, Math.ceil(Math.max(r.s.alt, Math.min(r.top ?? 0, 4000)) / 500) * 500);
+    const pct = z => Math.min(100, z / gmax * 100).toFixed(1) + '%';
+    let txt;
+    if (r.top == null) txt = `pas de couche basse prévue · sommet à ${r.s.alt} m`;
+    else if (r.marge > 0) txt = `couche jusqu'à ${r.top} m · sommet à ${r.s.alt} m · marge <span style="color:${r.marge < 150 ? '#B42318' : '#1F2328'}">+${r.marge} m</span>`;
+    else txt = `couche jusqu'à ${r.top} m · <span style="color:#B42318">sommet dans les nuages</span>`;
+    const models = Object.entries(r.d.models || {}).filter(([, m]) => m);
+    return `<article class="peak">
+      <div class="peak-head">
+        <div style="min-width:0">
+          <div class="peak-name">${esc(r.s.name)}</div>
+          <div class="peak-sub">${r.s.alt} m · ${esc(r.s.massif)} · vallée : ${esc(r.s.valley)}</div>
+        </div>
+        <div class="score c-${t}" aria-label="indice ${r.score} sur 100">${r.score}</div>
+      </div>
+      <div class="gauge">
+        ${r.top != null ? `<div class="fog" style="width:${pct(r.top)}"></div>` : ''}
+        <div class="alt" style="left:${pct(r.s.alt)}"></div>
+        <div class="max">${gmax} m</div>
+      </div>
+      <div class="gauge-txt">${txt}</div>
+      <div class="stats">
+        <div><span>HR sommet</span><b>${r.hr == null ? 'n/d' : Math.round(r.hr) + ' %'}</b></div>
+        <div><span>vent</span><b>${r.wind == null ? 'n/d' : Math.round(r.wind) + ' km/h'}</b></div>
+        <div><span>ciel</span><b>${r.d.sky}</b></div>
+        <div><span>accord</span><b>${r.d.agreement}</b></div>
+      </div>
+      <details>
+        <summary>détail par modèle</summary>
+        <div class="tbl"><table>
+          <thead><tr><th>modèle</th><th>mer</th><th>ciel</th><th>couche</th><th>bas</th><th>HR</th><th>inv.</th><th>vent</th></tr></thead>
+          <tbody>${models.map(([n, m]) => `<tr><td>${n}</td><td>${m.sea}</td><td>${m.sky}</td><td>${m.top ?? 'n/d'}</td><td>${m.low} %</td><td>${m.rh_summit ?? 'n/d'} %</td><td>${m.inversion ?? 'n/d'}</td><td>${m.wind}</td></tr>`).join('')}</tbody>
+        </table></div>
+        ${r.d.persist != null ? `<p>veille à 17h : indice ${r.d.persist}</p>` : ''}
+      </details>
+    </article>`;
+  }).join('');
 }
 
 function render() {
-  const date = data.days[dayIdx];
-  $("#tabs").innerHTML = data.days.map((d,i) =>
-    `<button type="button" id="tab-${i}" aria-pressed="${i===dayIdx}" data-i="${i}">${relDay(d)}</button>`).join("");
-  $("#tabs").querySelectorAll("button").forEach(b => b.onclick = () => { dayIdx = +b.dataset.i; render(); });
-
-  const rows = data.summits.map(s => ({s, d: s.days.find(x => x.date === date)})).filter(r => r.d)
-    .sort((a,b) => b.d.worth - a.d.worth);
-  const best = rows[0];
-  if (!best) { $("#verdict").innerHTML = "<p>Pas de prévision pour ce jour.</p>"; $("#list").innerHTML = ""; return; }
-  const t = tone(best.d.worth);
-  $("#verdict").innerHTML = `
-    <div class="big tone-${t}">${best.d.worth}<small>/100</small></div>
-    <h2 class="tone-${t}">${verdictText(best.d.worth)}</h2>
-    <p>${dayLabel(date)}, lever à ${hhmm(best.d.sunrise)}. Meilleur choix : <strong>${best.s.name}</strong> (${best.s.alt} m)${best.d.top ? `, mer prévue vers ${best.d.top} m` : ""}.</p>`;
-
-  $("#list").innerHTML = rows.map(({s,d}) => {
-    const models = Object.entries(d.models).filter(([,m]) => m);
-    return `<article class="row">
-      <div class="gauge">${gauge(s.alt, d.top)}</div>
-      <div class="info">
-        <div class="sign"><b>${s.name}</b><span>${s.alt} m · ${s.massif}</span></div>
-        <div class="chips">
-          <span>mer <em>${d.sea}</em></span>
-          <span>ciel <em>${d.sky}</em></span>
-          <span>sommet couche <em>${d.top ? d.top + " m" : "aucune"}</em></span>
-          <span>accord modèles <em>${d.agreement}</em></span>
-        </div>
-      </div>
-      <div class="score"><b class="tone-${tone(d.worth)}">${d.worth}</b><span>indice</span></div>
-      <details>
-        <summary>Détail par modèle · vallée : ${s.valley}</summary>
-        <div class="tbl"><table>
-          <thead><tr><th>Modèle</th><th>Mer</th><th>Ciel</th><th>Couche</th><th>Nuages bas</th><th>HR sommet</th><th>Inversion</th><th>Vent</th></tr></thead>
-          <tbody>${models.map(([k,m]) => `<tr><td>${k}</td><td>${m.sea}</td><td>${m.sky}</td><td>${m.top ?? "aucune"}${m.top?" m":""}</td><td>${m.low ?? ""} %</td><td>${m.rh_summit ?? ""} %</td><td>${m.inversion ?? ""} °C</td><td>${m.wind} km/h</td></tr>`).join("")}</tbody>
-        </table></div>
-        ${d.persist != null ? `<p class="sub">Situation la veille à 17h : indice ${d.persist}.</p>` : ""}
-      </details>
-    </article>`;
-  }).join("");
+  const date = DATA.days[dayIdx];
+  const rows = dayRows(date);
+  const sr = rows[0] && rows[0].d.sunrise;
+  $('#title').textContent = `${dayLabel(date)}${sr ? ' · lever ' + hhmm(sr) : ''}`;
+  renderTabs();
+  renderMap(rows);
+  renderChart(rows);
+  renderPeaks(rows);
 }
 
-function setMeta() {
+Promise.all([
+  fetch('data.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+  fetch('dem.json').then(r => r.ok ? r.json() : null).catch(() => null)
+]).then(([data, dem]) => {
+  if (!data || !data.days || !data.days.length) { $('#meta').textContent = 'données indisponibles'; return; }
+  DATA = data; DEM = dem;
   const g = new Date(data.generated);
-  const t = g.toLocaleString("fr-FR",{weekday:"short", hour:"2-digit", minute:"2-digit"}).replace(":", "h");
-  $("#meta").innerHTML = `Mis à jour ${t} · ${data.models.join(" + ")}` + (data.example ? `<span class="badge">exemple</span>` : "");
-}
-
-fetch("data.json", {cache:"no-store"}).then(r => { if (!r.ok) throw 0; return r.json(); })
-  .catch(() => EXAMPLE)
-  .then(d => { data = d; setMeta(); render(); });
+  $('#meta').textContent = `mis à jour ${g.toLocaleDateString('fr-FR', { weekday: 'short' })} ${g.getHours()}h${String(g.getMinutes()).padStart(2, '0')}`;
+  render();
+  let t;
+  window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(() => renderMap(dayRows(DATA.days[dayIdx])), 150); });
+});
 </script>
-
 </body>
 </html>

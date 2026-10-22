@@ -40,11 +40,23 @@ La Bastille a été écartée (trop basse). Il a aussi mentionné la Chartreuse 
 - Indice final = mer pondérée par le ciel (nuages moyens et hauts).
 - Ce n'est pas une probabilité calibrée. `docs/history.json` garde les prévisions pour calibrer plus tard avec les observations réelles (webcams, sorties).
 
+## La page (`docs/index.html`), validée par Roman sur maquette
+
+DA « carnet technique » : fond papier #FBFBF8, encre ardoise, IBM Plex Mono et IBM Plex Sans Condensed, nappe de nuages toujours en hachures gris bleu avec bord pointillé, indice en vert (70 et plus), ambre (45 à 69), gris (en dessous). Pas de marron, pas de verdict « oui / non » : il veut juste voir les scores.
+
+Trois blocs, dans cet ordre, pour le jour choisi :
+1. Petite carte : `docs/carte.png` (relief réel Copernicus DEM, ombrage gris léger, courbes tous les 100 m) + nappe dessinée en canvas depuis `docs/dem.json` : remplissage depuis le fond de chaque vallée tant que le relief est sous l'altitude prévue de la couche. Sommets placés par lat/lon (`SUMMITS` dans forecast.py, champ `label` pour le côté de l'étiquette).
+2. Hauteurs comparées : sommets à l'échelle côte à côte, silhouette propre à chaque sommet (`SHAPES` dans la page), bande hachurée à l'altitude de la couche de sa vallée, marge en blanc dans la silhouette ou en rouge si moins de 150 m.
+3. Sommets : un bloc par pic, trié par indice (barre couche / sommet, marge, humidité au sommet, vent, ciel, accord des modèles, détail par modèle repliable).
+
+`scripts/basemap.py` génère `dem.json` et `carte.png` une seule fois (le workflow le lance s'ils manquent). Emprise fixe `BBOX`, rapport 354 × 240 px.
+
 ## État au 22 octobre 2026
 
-- Code écrit dans un environnement sans accès à Open-Meteo : testé uniquement sur des profils synthétiques.
-- À faire en premier : lancer `python scripts/forecast.py` sur les vraies données, vérifier que tous les niveaux de pression AROME et ICON-D2 arrivent bien (sinon adapter `LEVELS`), vérifier les clés suffixées par modèle (`_meteofrance_arome_france`, `_icon_d2`), y compris `sunrise` dans `daily`.
-- Puis activer GitHub Pages (branche main, dossier `/docs`), ajouter le secret `NTFY_TOPIC`, lancer le workflow à la main.
+- Premières vraies données passées (niveaux 775, 825, 875 hPa retirés). Le 22 octobre : temps perturbé, couche jusqu'à environ 3060 m, indices à 0.
+- `docs/dem.json` et `docs/carte.png` pas encore générés : le prochain passage du workflow (ou `python scripts/basemap.py` en local) les crée.
+- Coordonnées des sommets approximatives : à vérifier sur la carte IGN.
+- Reste à faire : activer GitHub Pages (branche main, dossier `/docs`), ajouter le secret `NTFY_TOPIC`, puis calibrer les poids avec de vraies sorties.
 
 ## Préférences de Roman
 

@@ -6,6 +6,7 @@ Indice de mer de nuages à l'aube pour six sommets autour de Grenoble (Mont Rach
 
 - `scripts/forecast.py` interroge Open-Meteo (AROME France et ICON-D2, niveaux 1000 à 700 hPa) pour la vallée que domine chaque sommet, à l'heure du lever.
 - Il calcule un indice de mer (couche basse, sommet de couche sous le sommet visé, air sec au sommet, inversion, vent, persistance de la veille) puis un indice final pondéré par le ciel au dessus.
+- `scripts/basemap.py` récupère une fois le relief réel (Copernicus DEM via Open-Meteo) et dessine le fond de carte `docs/carte.png` ; la page s'en sert pour tracer la nappe de nuages.
 - GitHub Actions le lance trois fois par jour et publie `docs/data.json`, lu par la page `docs/index.html` (GitHub Pages).
 - Notification ntfy le soir uniquement si l'indice du lendemain dépasse 80 et que les deux modèles sont d'accord.
 

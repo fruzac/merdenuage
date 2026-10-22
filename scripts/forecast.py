@@ -26,13 +26,21 @@ VALLEYS = {
     "trieves": {"name": "Trièves", "lat": 44.870, "lon": 5.650},
 }
 
+# Coordonnees approximatives des sommets (affichage sur la carte uniquement).
+# label : cote de l'etiquette sur la carte, pour eviter les chevauchements.
 SUMMITS = [
-    {"id": "rachais", "name": "Mont Rachais", "massif": "Chartreuse", "alt": 1046, "valley": "grenoble"},
-    {"id": "eynard", "name": "Fort Saint Eynard", "massif": "Chartreuse", "alt": 1338, "valley": "gresivaudan"},
-    {"id": "moucherotte", "name": "Moucherotte", "massif": "Vercors", "alt": 1901, "valley": "grenoble"},
-    {"id": "chamechaude", "name": "Chamechaude", "massif": "Chartreuse", "alt": 2082, "valley": "gresivaudan"},
-    {"id": "moucherolle", "name": "Grande Moucherolle", "massif": "Vercors", "alt": 2284, "valley": "grenoble"},
-    {"id": "veymont", "name": "Grand Veymont", "massif": "Vercors", "alt": 2341, "valley": "trieves"},
+    {"id": "rachais", "name": "Mont Rachais", "massif": "Chartreuse", "alt": 1046, "valley": "grenoble",
+     "lat": 45.2167, "lon": 5.7292, "label": "left"},
+    {"id": "eynard", "name": "Fort Saint Eynard", "massif": "Chartreuse", "alt": 1338, "valley": "gresivaudan",
+     "lat": 45.2361, "lon": 5.7614, "label": "right"},
+    {"id": "moucherotte", "name": "Moucherotte", "massif": "Vercors", "alt": 1901, "valley": "grenoble",
+     "lat": 45.1456, "lon": 5.6389, "label": "right"},
+    {"id": "chamechaude", "name": "Chamechaude", "massif": "Chartreuse", "alt": 2082, "valley": "gresivaudan",
+     "lat": 45.2878, "lon": 5.7875, "label": "left"},
+    {"id": "moucherolle", "name": "Grande Moucherolle", "massif": "Vercors", "alt": 2284, "valley": "grenoble",
+     "lat": 45.0350, "lon": 5.5795, "label": "right"},
+    {"id": "veymont", "name": "Grand Veymont", "massif": "Vercors", "alt": 2341, "valley": "trieves",
+     "lat": 44.8722, "lon": 5.5253, "label": "right"},
 ]
 
 MODELS = ["meteofrance_arome_france", "icon_d2"]
@@ -215,7 +223,7 @@ def combine(per_model, persist):
 def run():
     now = datetime.now(timezone.utc)
     out = {"generated": now.isoformat(timespec="minutes"), "models": [MODEL_LABEL[m] for m in MODELS],
-           "summits": [], "days": []}
+           "valleys": VALLEYS, "summits": [], "days": []}
     cache = {}
     for s in SUMMITS:
         v = VALLEYS[s["valley"]]
@@ -240,8 +248,8 @@ def run():
             if c is None:
                 continue
             days.append({"date": sr[:10], "sunrise": sr[11:16], **c, "models": per})
-        out["summits"].append({**{k: s[k] for k in ("id", "name", "massif", "alt")},
-                               "valley": v["name"], "days": days})
+        out["summits"].append({**{k: s[k] for k in ("id", "name", "massif", "alt", "lat", "lon", "label")},
+                               "valley": v["name"], "valley_id": s["valley"], "days": days})
     dates = sorted({d["date"] for s in out["summits"] for d in s["days"]})
     out["days"] = dates
     return out

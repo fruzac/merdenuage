@@ -112,7 +112,11 @@
       }
      }
     }
-   ]
+   ],
+   "lat": 45.2167,
+   "lon": 5.7292,
+   "label": "left",
+   "valley_id": "grenoble"
   },
   {
    "id": "eynard",
@@ -221,7 +225,11 @@
       }
      }
     }
-   ]
+   ],
+   "lat": 45.2361,
+   "lon": 5.7614,
+   "label": "right",
+   "valley_id": "gresivaudan"
   },
   {
    "id": "moucherotte",
@@ -330,7 +338,11 @@
       }
      }
     }
-   ]
+   ],
+   "lat": 45.1456,
+   "lon": 5.6389,
+   "label": "right",
+   "valley_id": "grenoble"
   },
   {
    "id": "chamechaude",
@@ -439,7 +451,11 @@
       }
      }
     }
-   ]
+   ],
+   "lat": 45.2878,
+   "lon": 5.7875,
+   "label": "left",
+   "valley_id": "gresivaudan"
   },
   {
    "id": "moucherolle",
@@ -548,7 +564,11 @@
       }
      }
     }
-   ]
+   ],
+   "lat": 45.035,
+   "lon": 5.5795,
+   "label": "right",
+   "valley_id": "grenoble"
   },
   {
    "id": "veymont",
@@ -657,11 +677,32 @@
       }
      }
     }
-   ]
+   ],
+   "lat": 44.8722,
+   "lon": 5.5253,
+   "label": "right",
+   "valley_id": "trieves"
   }
  ],
  "days": [
   "2026-10-23",
   "2026-10-24"
- ]
+ ],
+ "valleys": {
+  "grenoble": {
+   "name": "Cuvette grenobloise",
+   "lat": 45.188,
+   "lon": 5.724
+  },
+  "gresivaudan": {
+   "name": "Grésivaudan",
+   "lat": 45.27,
+   "lon": 5.88
+  },
+  "trieves": {
+   "name": "Trièves",
+   "lat": 44.87,
+   "lon": 5.65
+  }
+ }
 }
