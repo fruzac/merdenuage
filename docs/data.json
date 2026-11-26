@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-25T23:33+00:00",
+ "generated": "2026-11-26T15:03+00:00",
  "models": [
   "AROME",
   "ICON-D2"
@@ -34,61 +34,6 @@
    "valley_id": "grenoble",
    "days": [
     {
-     "date": "2026-11-26",
-     "sunrise": "07:49",
-     "sea": 0,
-     "sky": 0,
-     "worth": 0,
-     "agreement": 100,
-     "top": 2731,
-     "deep": false,
-     "mid": 90,
-     "high": 100,
-     "persist": 0,
-     "models": {
-      "AROME": {
-       "sea": 0,
-       "sky": 0,
-       "top": 2938,
-       "deep": true,
-       "low": 100,
-       "mid": 100,
-       "high": 100,
-       "rh_summit": 98,
-       "inversion": 1.5,
-       "wind": 8,
-       "parts": {
-        "couche": 1.0,
-        "sous_sommet": 0.0,
-        "sec": 0.0,
-        "inversion": 0.36,
-        "vent": 1.0,
-        "ciel": 0.0
-       }
-      },
-      "ICON-D2": {
-       "sea": 0,
-       "sky": 0,
-       "top": 2524,
-       "deep": false,
-       "low": 90,
-       "mid": 79,
-       "high": 100,
-       "rh_summit": 99,
-       "inversion": -0.4,
-       "wind": 19,
-       "parts": {
-        "couche": 1.0,
-        "sous_sommet": 0.0,
-        "sec": 0.0,
-        "inversion": 0.08,
-        "vent": 0.83,
-        "ciel": 0.0
-       }
-      }
-     }
-    },
-    {
      "date": "2026-11-27",
      "sunrise": "07:50",
      "sea": 0,
@@ -106,17 +51,17 @@
        "sky": 100,
        "top": null,
        "deep": false,
-       "low": 0,
+       "low": 20,
        "mid": 0,
        "high": 0,
-       "rh_summit": 76,
-       "inversion": 2.9,
-       "wind": 5,
+       "rh_summit": 82,
+       "inversion": 2.4,
+       "wind": 3,
        "parts": {
         "couche": 0.0,
         "sous_sommet": 0.0,
-        "sec": 0.53,
-        "inversion": 0.55,
+        "sec": 0.33,
+        "inversion": 0.49,
         "vent": 1.0,
         "ciel": 1.0
        }
@@ -126,17 +71,72 @@
        "sky": 100,
        "top": null,
        "deep": false,
-       "low": 95,
+       "low": 92,
        "mid": 0,
        "high": 0,
-       "rh_summit": 91,
-       "inversion": -0.0,
-       "wind": 15,
+       "rh_summit": 90,
+       "inversion": 0.1,
+       "wind": 17,
        "parts": {
         "couche": 0.25,
         "sous_sommet": 0.0,
-        "sec": 0.03,
-        "inversion": 0.14,
+        "sec": 0.07,
+        "inversion": 0.16,
+        "vent": 0.91,
+        "ciel": 1.0
+       }
+      }
+     }
+    },
+    {
+     "date": "2026-11-28",
+     "sunrise": "07:52",
+     "sea": 30,
+     "sky": 100,
+     "worth": 30,
+     "agreement": 20,
+     "top": 635,
+     "deep": false,
+     "mid": 0,
+     "high": 0,
+     "persist": 0,
+     "models": {
+      "AROME": {
+       "sea": 0,
+       "sky": 100,
+       "top": null,
+       "deep": false,
+       "low": 1,
+       "mid": 0,
+       "high": 0,
+       "rh_summit": 62,
+       "inversion": 4.8,
+       "wind": 6,
+       "parts": {
+        "couche": 0.0,
+        "sous_sommet": 0.0,
+        "sec": 1.0,
+        "inversion": 0.82,
+        "vent": 1.0,
+        "ciel": 1.0
+       }
+      },
+      "ICON-D2": {
+       "sea": 80,
+       "sky": 100,
+       "top": 635,
+       "deep": false,
+       "low": 86,
+       "mid": 0,
+       "high": 0,
+       "rh_summit": 58,
+       "inversion": 2.5,
+       "wind": 5,
+       "parts": {
+        "couche": 1.0,
+        "sous_sommet": 1.0,
+        "sec": 1.0,
+        "inversion": 0.49,
         "vent": 1.0,
         "ciel": 1.0
        }
@@ -157,110 +157,110 @@
    "valley_id": "gresivaudan",
    "days": [
     {
-     "date": "2026-11-26",
-     "sunrise": "07:49",
-     "sea": 4,
-     "sky": 0,
-     "worth": 2,
-     "agreement": 100,
-     "top": 2940,
-     "deep": true,
-     "mid": 100,
-     "high": 100,
-     "persist": 17,
-     "models": {
-      "AROME": {
-       "sea": 0,
-       "sky": 0,
-       "top": 2938,
-       "deep": true,
-       "low": 100,
-       "mid": 100,
-       "high": 100,
-       "rh_summit": 99,
-       "inversion": 2.3,
-       "wind": 20,
-       "parts": {
-        "couche": 1.0,
-        "sous_sommet": 0.0,
-        "sec": 0.0,
-        "inversion": 0.47,
-        "vent": 0.8,
-        "ciel": 0.0
-       }
-      },
-      "ICON-D2": {
-       "sea": 0,
-       "sky": 0,
-       "top": 2943,
-       "deep": true,
-       "low": 97,
-       "mid": 100,
-       "high": 100,
-       "rh_summit": 99,
-       "inversion": 1.0,
-       "wind": 20,
-       "parts": {
-        "couche": 1.0,
-        "sous_sommet": 0.0,
-        "sec": 0.0,
-        "inversion": 0.29,
-        "vent": 0.79,
-        "ciel": 0.0
-       }
-      }
-     }
-    },
-    {
      "date": "2026-11-27",
      "sunrise": "07:50",
-     "sea": 0,
+     "sea": 30,
      "sky": 100,
-     "worth": 0,
-     "agreement": 100,
-     "top": 1546,
+     "worth": 30,
+     "agreement": 19,
+     "top": 905,
      "deep": false,
      "mid": 0,
      "high": 0,
      "persist": 0,
      "models": {
       "AROME": {
-       "sea": 0,
+       "sea": 81,
        "sky": 100,
-       "top": null,
+       "top": 905,
        "deep": false,
-       "low": 8,
+       "low": 97,
        "mid": 0,
        "high": 0,
-       "rh_summit": 64,
-       "inversion": 6.0,
-       "wind": 22,
+       "rh_summit": 63,
+       "inversion": 4.7,
+       "wind": 23,
        "parts": {
-        "couche": 0.0,
-        "sous_sommet": 0.0,
-        "sec": 0.92,
-        "inversion": 1.0,
-        "vent": 0.74,
+        "couche": 1.0,
+        "sous_sommet": 1.0,
+        "sec": 0.97,
+        "inversion": 0.81,
+        "vent": 0.67,
         "ciel": 1.0
        }
       },
       "ICON-D2": {
        "sea": 0,
        "sky": 100,
-       "top": 1546,
+       "top": null,
        "deep": false,
-       "low": 91,
+       "low": 78,
        "mid": 0,
        "high": 0,
-       "rh_summit": 99,
-       "inversion": 2.4,
+       "rh_summit": 92,
+       "inversion": 2.7,
        "wind": 20,
        "parts": {
-        "couche": 1.0,
+        "couche": 0.25,
         "sous_sommet": 0.0,
         "sec": 0.0,
-        "inversion": 0.48,
-        "vent": 0.78,
+        "inversion": 0.52,
+        "vent": 0.82,
+        "ciel": 1.0
+       }
+      }
+     }
+    },
+    {
+     "date": "2026-11-28",
+     "sunrise": "07:51",
+     "sea": 66,
+     "sky": 100,
+     "worth": 66,
+     "agreement": 88,
+     "top": 664,
+     "deep": false,
+     "mid": 0,
+     "high": 0,
+     "persist": 0,
+     "models": {
+      "AROME": {
+       "sea": 82,
+       "sky": 100,
+       "top": 654,
+       "deep": false,
+       "low": 74,
+       "mid": 0,
+       "high": 0,
+       "rh_summit": 37,
+       "inversion": 7.2,
+       "wind": 23,
+       "parts": {
+        "couche": 0.89,
+        "sous_sommet": 1.0,
+        "sec": 1.0,
+        "inversion": 1.0,
+        "vent": 0.69,
+        "ciel": 1.0
+       }
+      },
+      "ICON-D2": {
+       "sea": 94,
+       "sky": 100,
+       "top": 674,
+       "deep": false,
+       "low": 100,
+       "mid": 0,
+       "high": 0,
+       "rh_summit": 43,
+       "inversion": 4.8,
+       "wind": 15,
+       "parts": {
+        "couche": 1.0,
+        "sous_sommet": 1.0,
+        "sec": 1.0,
+        "inversion": 0.83,
+        "vent": 1.0,
         "ciel": 1.0
        }
       }
@@ -280,61 +280,6 @@
    "valley_id": "grenoble",
    "days": [
     {
-     "date": "2026-11-26",
-     "sunrise": "07:49",
-     "sea": 5,
-     "sky": 0,
-     "worth": 2,
-     "agreement": 100,
-     "top": 2731,
-     "deep": false,
-     "mid": 90,
-     "high": 100,
-     "persist": 18,
-     "models": {
-      "AROME": {
-       "sea": 0,
-       "sky": 0,
-       "top": 2938,
-       "deep": true,
-       "low": 100,
-       "mid": 100,
-       "high": 100,
-       "rh_summit": 100,
-       "inversion": 2.6,
-       "wind": 39,
-       "parts": {
-        "couche": 1.0,
-        "sous_sommet": 0.0,
-        "sec": 0.0,
-        "inversion": 0.52,
-        "vent": 0.03,
-        "ciel": 0.0
-       }
-      },
-      "ICON-D2": {
-       "sea": 0,
-       "sky": 0,
-       "top": 2524,
-       "deep": false,
-       "low": 90,
-       "mid": 79,
-       "high": 100,
-       "rh_summit": 96,
-       "inversion": -0.2,
-       "wind": 27,
-       "parts": {
-        "couche": 1.0,
-        "sous_sommet": 0.0,
-        "sec": 0.0,
-        "inversion": 0.11,
-        "vent": 0.51,
-        "ciel": 0.0
-       }
-      }
-     }
-    },
-    {
      "date": "2026-11-27",
      "sunrise": "07:50",
      "sea": 0,
@@ -352,18 +297,18 @@
        "sky": 100,
        "top": null,
        "deep": false,
-       "low": 0,
+       "low": 20,
        "mid": 0,
        "high": 0,
-       "rh_summit": 39,
-       "inversion": 7.3,
-       "wind": 22,
+       "rh_summit": 37,
+       "inversion": 6.9,
+       "wind": 24,
        "parts": {
         "couche": 0.0,
         "sous_sommet": 0.0,
         "sec": 1.0,
         "inversion": 1.0,
-        "vent": 0.71,
+        "vent": 0.66,
         "ciel": 1.0
        }
       },
@@ -372,18 +317,73 @@
        "sky": 100,
        "top": null,
        "deep": false,
-       "low": 95,
+       "low": 92,
        "mid": 0,
        "high": 0,
-       "rh_summit": 60,
-       "inversion": 2.0,
+       "rh_summit": 64,
+       "inversion": 2.2,
        "wind": 19,
        "parts": {
         "couche": 0.25,
         "sous_sommet": 0.0,
-        "sec": 1.0,
-        "inversion": 0.43,
+        "sec": 0.94,
+        "inversion": 0.46,
         "vent": 0.83,
+        "ciel": 1.0
+       }
+      }
+     }
+    },
+    {
+     "date": "2026-11-28",
+     "sunrise": "07:52",
+     "sea": 37,
+     "sky": 100,
+     "worth": 37,
+     "agreement": 2,
+     "top": 635,
+     "deep": false,
+     "mid": 0,
+     "high": 0,
+     "persist": 0,
+     "models": {
+      "AROME": {
+       "sea": 0,
+       "sky": 100,
+       "top": null,
+       "deep": false,
+       "low": 1,
+       "mid": 0,
+       "high": 0,
+       "rh_summit": 11,
+       "inversion": 12.3,
+       "wind": 21,
+       "parts": {
+        "couche": 0.0,
+        "sous_sommet": 0.0,
+        "sec": 1.0,
+        "inversion": 1.0,
+        "vent": 0.75,
+        "ciel": 1.0
+       }
+      },
+      "ICON-D2": {
+       "sea": 98,
+       "sky": 100,
+       "top": 635,
+       "deep": false,
+       "low": 86,
+       "mid": 0,
+       "high": 0,
+       "rh_summit": 15,
+       "inversion": 7.6,
+       "wind": 17,
+       "parts": {
+        "couche": 1.0,
+        "sous_sommet": 1.0,
+        "sec": 1.0,
+        "inversion": 1.0,
+        "vent": 0.93,
         "ciel": 1.0
        }
       }
@@ -403,110 +403,110 @@
    "valley_id": "gresivaudan",
    "days": [
     {
-     "date": "2026-11-26",
-     "sunrise": "07:49",
-     "sea": 4,
-     "sky": 0,
-     "worth": 2,
-     "agreement": 100,
-     "top": 2940,
-     "deep": true,
-     "mid": 100,
-     "high": 100,
-     "persist": 16,
-     "models": {
-      "AROME": {
-       "sea": 0,
-       "sky": 0,
-       "top": 2938,
-       "deep": true,
-       "low": 100,
-       "mid": 100,
-       "high": 100,
-       "rh_summit": 100,
-       "inversion": 3.2,
-       "wind": 39,
-       "parts": {
-        "couche": 1.0,
-        "sous_sommet": 0.0,
-        "sec": 0.0,
-        "inversion": 0.6,
-        "vent": 0.04,
-        "ciel": 0.0
-       }
-      },
-      "ICON-D2": {
-       "sea": 0,
-       "sky": 0,
-       "top": 2943,
-       "deep": true,
-       "low": 97,
-       "mid": 100,
-       "high": 100,
-       "rh_summit": 100,
-       "inversion": 1.3,
-       "wind": 29,
-       "parts": {
-        "couche": 1.0,
-        "sous_sommet": 0.0,
-        "sec": 0.0,
-        "inversion": 0.33,
-        "vent": 0.46,
-        "ciel": 0.0
-       }
-      }
-     }
-    },
-    {
      "date": "2026-11-27",
      "sunrise": "07:50",
      "sea": 32,
      "sky": 100,
      "worth": 32,
-     "agreement": 15,
-     "top": 1546,
+     "agreement": 14,
+     "top": 905,
      "deep": false,
      "mid": 0,
      "high": 0,
      "persist": 0,
      "models": {
       "AROME": {
-       "sea": 0,
+       "sea": 86,
        "sky": 100,
-       "top": null,
+       "top": 905,
        "deep": false,
-       "low": 8,
+       "low": 97,
        "mid": 0,
        "high": 0,
-       "rh_summit": 34,
-       "inversion": 9.1,
-       "wind": 23,
-       "parts": {
-        "couche": 0.0,
-        "sous_sommet": 0.0,
-        "sec": 1.0,
-        "inversion": 1.0,
-        "vent": 0.69,
-        "ciel": 1.0
-       }
-      },
-      "ICON-D2": {
-       "sea": 85,
-       "sky": 100,
-       "top": 1546,
-       "deep": false,
-       "low": 91,
-       "mid": 0,
-       "high": 0,
-       "rh_summit": 53,
-       "inversion": 4.8,
-       "wind": 22,
+       "rh_summit": 32,
+       "inversion": 7.6,
+       "wind": 25,
        "parts": {
         "couche": 1.0,
         "sous_sommet": 1.0,
         "sec": 1.0,
-        "inversion": 0.83,
+        "inversion": 1.0,
+        "vent": 0.61,
+        "ciel": 1.0
+       }
+      },
+      "ICON-D2": {
+       "sea": 0,
+       "sky": 100,
+       "top": null,
+       "deep": false,
+       "low": 78,
+       "mid": 0,
+       "high": 0,
+       "rh_summit": 54,
+       "inversion": 5.0,
+       "wind": 22,
+       "parts": {
+        "couche": 0.25,
+        "sous_sommet": 0.0,
+        "sec": 1.0,
+        "inversion": 0.85,
         "vent": 0.72,
+        "ciel": 1.0
+       }
+      }
+     }
+    },
+    {
+     "date": "2026-11-28",
+     "sunrise": "07:51",
+     "sea": 64,
+     "sky": 100,
+     "worth": 64,
+     "agreement": 94,
+     "top": 664,
+     "deep": false,
+     "mid": 0,
+     "high": 0,
+     "persist": 0,
+     "models": {
+      "AROME": {
+       "sea": 82,
+       "sky": 100,
+       "top": 654,
+       "deep": false,
+       "low": 74,
+       "mid": 0,
+       "high": 0,
+       "rh_summit": 10,
+       "inversion": 12.4,
+       "wind": 22,
+       "parts": {
+        "couche": 0.89,
+        "sous_sommet": 1.0,
+        "sec": 1.0,
+        "inversion": 1.0,
+        "vent": 0.7,
+        "ciel": 1.0
+       }
+      },
+      "ICON-D2": {
+       "sea": 88,
+       "sky": 100,
+       "top": 674,
+       "deep": false,
+       "low": 100,
+       "mid": 0,
+       "high": 0,
+       "rh_summit": 16,
+       "inversion": 9.4,
+       "wind": 24,
+       "parts": {
+        "couche": 1.0,
+        "sous_sommet": 1.0,
+        "sec": 1.0,
+        "inversion": 1.0,
+        "vent": 0.66,
         "ciel": 1.0
        }
       }
@@ -526,61 +526,6 @@
    "valley_id": "grenoble",
    "days": [
     {
-     "date": "2026-11-26",
-     "sunrise": "07:49",
-     "sea": 5,
-     "sky": 0,
-     "worth": 2,
-     "agreement": 100,
-     "top": 2731,
-     "deep": false,
-     "mid": 90,
-     "high": 100,
-     "persist": 18,
-     "models": {
-      "AROME": {
-       "sea": 0,
-       "sky": 0,
-       "top": 2938,
-       "deep": true,
-       "low": 100,
-       "mid": 100,
-       "high": 100,
-       "rh_summit": 100,
-       "inversion": 3.0,
-       "wind": 44,
-       "parts": {
-        "couche": 1.0,
-        "sous_sommet": 0.0,
-        "sec": 0.0,
-        "inversion": 0.58,
-        "vent": 0.0,
-        "ciel": 0.0
-       }
-      },
-      "ICON-D2": {
-       "sea": 0,
-       "sky": 0,
-       "top": 2524,
-       "deep": false,
-       "low": 90,
-       "mid": 79,
-       "high": 100,
-       "rh_summit": 94,
-       "inversion": 0.1,
-       "wind": 32,
-       "parts": {
-        "couche": 1.0,
-        "sous_sommet": 0.0,
-        "sec": 0.0,
-        "inversion": 0.16,
-        "vent": 0.31,
-        "ciel": 0.0
-       }
-      }
-     }
-    },
-    {
      "date": "2026-11-27",
      "sunrise": "07:50",
      "sea": 0,
@@ -598,18 +543,18 @@
        "sky": 100,
        "top": null,
        "deep": false,
-       "low": 0,
+       "low": 20,
        "mid": 0,
        "high": 0,
-       "rh_summit": 27,
-       "inversion": 8.3,
-       "wind": 28,
+       "rh_summit": 26,
+       "inversion": 7.8,
+       "wind": 29,
        "parts": {
         "couche": 0.0,
         "sous_sommet": 0.0,
         "sec": 1.0,
         "inversion": 1.0,
-        "vent": 0.49,
+        "vent": 0.43,
         "ciel": 1.0
        }
       },
@@ -618,18 +563,73 @@
        "sky": 100,
        "top": null,
        "deep": false,
-       "low": 95,
+       "low": 92,
        "mid": 0,
        "high": 0,
-       "rh_summit": 45,
-       "inversion": 3.7,
+       "rh_summit": 51,
+       "inversion": 3.8,
        "wind": 23,
        "parts": {
         "couche": 0.25,
         "sous_sommet": 0.0,
         "sec": 1.0,
-        "inversion": 0.67,
-        "vent": 0.69,
+        "inversion": 0.69,
+        "vent": 0.67,
+        "ciel": 1.0
+       }
+      }
+     }
+    },
+    {
+     "date": "2026-11-28",
+     "sunrise": "07:52",
+     "sea": 33,
+     "sky": 100,
+     "worth": 33,
+     "agreement": 12,
+     "top": 635,
+     "deep": false,
+     "mid": 0,
+     "high": 0,
+     "persist": 0,
+     "models": {
+      "AROME": {
+       "sea": 0,
+       "sky": 100,
+       "top": null,
+       "deep": false,
+       "low": 1,
+       "mid": 0,
+       "high": 0,
+       "rh_summit": 5,
+       "inversion": 14.4,
+       "wind": 29,
+       "parts": {
+        "couche": 0.0,
+        "sous_sommet": 0.0,
+        "sec": 1.0,
+        "inversion": 1.0,
+        "vent": 0.45,
+        "ciel": 1.0
+       }
+      },
+      "ICON-D2": {
+       "sea": 88,
+       "sky": 100,
+       "top": 635,
+       "deep": false,
+       "low": 86,
+       "mid": 0,
+       "high": 0,
+       "rh_summit": 10,
+       "inversion": 9.9,
+       "wind": 24,
+       "parts": {
+        "couche": 1.0,
+        "sous_sommet": 1.0,
+        "sec": 1.0,
+        "inversion": 1.0,
+        "vent": 0.66,
         "ciel": 1.0
        }
       }
@@ -649,110 +649,110 @@
    "valley_id": "trieves",
    "days": [
     {
-     "date": "2026-11-26",
-     "sunrise": "07:48",
-     "sea": 15,
-     "sky": 0,
-     "worth": 7,
-     "agreement": 74,
-     "top": 2238,
+     "date": "2026-11-27",
+     "sunrise": "07:50",
+     "sea": 63,
+     "sky": 100,
+     "worth": 63,
+     "agreement": 100,
+     "top": 1359,
      "deep": false,
-     "mid": 100,
-     "high": 100,
-     "persist": 22,
+     "mid": 0,
+     "high": 0,
+     "persist": 44,
      "models": {
       "AROME": {
-       "sea": 0,
-       "sky": 0,
-       "top": 2693,
+       "sea": 69,
+       "sky": 100,
+       "top": 1170,
        "deep": false,
-       "low": 100,
-       "mid": 100,
-       "high": 100,
-       "rh_summit": 98,
-       "inversion": 2.2,
-       "wind": 63,
-       "parts": {
-        "couche": 1.0,
-        "sous_sommet": 0.0,
-        "sec": 0.0,
-        "inversion": 0.46,
-        "vent": 0.0,
-        "ciel": 0.0
-       }
-      },
-      "ICON-D2": {
-       "sea": 26,
-       "sky": 0,
-       "top": 1783,
-       "deep": false,
-       "low": 100,
-       "mid": 100,
-       "high": 100,
-       "rh_summit": 86,
-       "inversion": 1.0,
-       "wind": 49,
+       "low": 97,
+       "mid": 0,
+       "high": 0,
+       "rh_summit": 20,
+       "inversion": 8.6,
+       "wind": 36,
        "parts": {
         "couche": 1.0,
         "sous_sommet": 1.0,
-        "sec": 0.19,
-        "inversion": 0.28,
-        "vent": 0.0,
-        "ciel": 0.0
+        "sec": 1.0,
+        "inversion": 1.0,
+        "vent": 0.14,
+        "ciel": 1.0
+       }
+      },
+      "ICON-D2": {
+       "sea": 69,
+       "sky": 100,
+       "top": 1548,
+       "deep": false,
+       "low": 100,
+       "mid": 0,
+       "high": 0,
+       "rh_summit": 48,
+       "inversion": 4.7,
+       "wind": 33,
+       "parts": {
+        "couche": 1.0,
+        "sous_sommet": 1.0,
+        "sec": 1.0,
+        "inversion": 0.81,
+        "vent": 0.28,
+        "ciel": 1.0
        }
       }
      }
     },
     {
-     "date": "2026-11-27",
-     "sunrise": "07:50",
-     "sea": 36,
+     "date": "2026-11-28",
+     "sunrise": "07:51",
+     "sea": 0,
      "sky": 100,
-     "worth": 36,
-     "agreement": 30,
-     "top": 1542,
+     "worth": 0,
+     "agreement": 100,
+     "top": null,
      "deep": false,
      "mid": 0,
      "high": 0,
-     "persist": 38,
+     "persist": 0,
      "models": {
       "AROME": {
        "sea": 0,
        "sky": 100,
        "top": null,
        "deep": false,
-       "low": 14,
+       "low": 0,
        "mid": 0,
        "high": 0,
-       "rh_summit": 22,
-       "inversion": 9.4,
-       "wind": 33,
+       "rh_summit": 5,
+       "inversion": 13.4,
+       "wind": 32,
        "parts": {
         "couche": 0.0,
         "sous_sommet": 0.0,
         "sec": 1.0,
         "inversion": 1.0,
-        "vent": 0.26,
+        "vent": 0.34,
         "ciel": 1.0
        }
       },
       "ICON-D2": {
-       "sea": 70,
+       "sea": 0,
        "sky": 100,
-       "top": 1542,
+       "top": null,
        "deep": false,
        "low": 100,
        "mid": 0,
        "high": 0,
-       "rh_summit": 42,
-       "inversion": 4.5,
-       "wind": 32,
+       "rh_summit": 15,
+       "inversion": 11.3,
+       "wind": 29,
        "parts": {
-        "couche": 1.0,
-        "sous_sommet": 1.0,
+        "couche": 0.25,
+        "sous_sommet": 0.0,
         "sec": 1.0,
-        "inversion": 0.78,
-        "vent": 0.31,
+        "inversion": 1.0,
+        "vent": 0.46,
         "ciel": 1.0
        }
       }
@@ -762,32 +762,16 @@
   }
  ],
  "days": [
-  "2026-11-26",
-  "2026-11-27"
+  "2026-11-27",
+  "2026-11-28"
  ],
  "sunrises": [
-  "2026-11-26T07:48",
-  "2026-11-26T07:49",
-  "2026-11-27T07:50"
+  "2026-11-27T07:50",
+  "2026-11-28T07:51",
+  "2026-11-28T07:52"
  ],
  "timeline": {
   "hours": [
-   "2026-11-26T00:00",
-   "2026-11-26T01:00",
-   "2026-11-26T02:00",
-   "2026-11-26T03:00",
-   "2026-11-26T04:00",
-   "2026-11-26T05:00",
-   "2026-11-26T06:00",
-   "2026-11-26T07:00",
-   "2026-11-26T08:00",
-   "2026-11-26T09:00",
-   "2026-11-26T10:00",
-   "2026-11-26T11:00",
-   "2026-11-26T12:00",
-   "2026-11-26T13:00",
-   "2026-11-26T14:00",
-   "2026-11-26T15:00",
    "2026-11-26T16:00",
    "2026-11-26T17:00",
    "2026-11-26T18:00",
@@ -806,214 +790,46 @@
    "2026-11-27T07:00",
    "2026-11-27T08:00",
    "2026-11-27T09:00",
-   "2026-11-27T10:00"
+   "2026-11-27T10:00",
+   "2026-11-27T11:00",
+   "2026-11-27T12:00",
+   "2026-11-27T13:00",
+   "2026-11-27T14:00",
+   "2026-11-27T15:00",
+   "2026-11-27T16:00",
+   "2026-11-27T17:00",
+   "2026-11-27T18:00",
+   "2026-11-27T19:00",
+   "2026-11-27T20:00",
+   "2026-11-27T21:00",
+   "2026-11-27T22:00",
+   "2026-11-27T23:00",
+   "2026-11-28T00:00",
+   "2026-11-28T01:00",
+   "2026-11-28T02:00",
+   "2026-11-28T03:00",
+   "2026-11-28T04:00",
+   "2026-11-28T05:00",
+   "2026-11-28T06:00",
+   "2026-11-28T07:00",
+   "2026-11-28T08:00",
+   "2026-11-28T09:00",
+   "2026-11-28T10:00"
   ],
   "valleys": {
    "grenoble": [
     {
      "top": null,
      "deep": false,
-     "layers": [],
-     "low": 43,
-     "mid": 71,
-     "high": 100
-    },
-    {
-     "top": null,
-     "deep": false,
      "layers": [
       [
-       1398,
-       2934,
-       true
-      ]
-     ],
-     "low": 42,
-     "mid": 46,
-     "high": 98
-    },
-    {
-     "top": null,
-     "deep": false,
-     "layers": [
-      [
-       1226,
-       2932,
-       true
-      ]
-     ],
-     "low": 64,
-     "mid": 100,
-     "high": 100
-    },
-    {
-     "top": null,
-     "deep": false,
-     "layers": [],
-     "low": 93,
-     "mid": 100,
-     "high": 72
-    },
-    {
-     "top": null,
-     "deep": false,
-     "layers": [
-      [
-       1151,
-       2937,
-       true
-      ]
-     ],
-     "low": 96,
-     "mid": 99,
-     "high": 90
-    },
-    {
-     "top": 721,
-     "deep": false,
-     "layers": [
-      [
-       982,
-       2938,
-       true
-      ]
-     ],
-     "low": 92,
-     "mid": 100,
-     "high": 58
-    },
-    {
-     "top": 2940,
-     "deep": true,
-     "layers": [],
-     "low": 94,
-     "mid": 98,
-     "high": 74
-    },
-    {
-     "top": 2940,
-     "deep": true,
-     "layers": [],
-     "low": 100,
-     "mid": 100,
-     "high": 100
-    },
-    {
-     "top": 2940,
-     "deep": true,
-     "layers": [],
-     "low": 95,
-     "mid": 90,
-     "high": 100
-    },
-    {
-     "top": 2943,
-     "deep": true,
-     "layers": [],
-     "low": 90,
-     "mid": 93,
-     "high": 99
-    },
-    {
-     "top": 2945,
-     "deep": true,
-     "layers": [],
-     "low": 95,
-     "mid": 100,
-     "high": 92
-    },
-    {
-     "top": 2950,
-     "deep": true,
-     "layers": [],
-     "low": 97,
-     "mid": 96,
-     "high": 100
-    },
-    {
-     "top": 2950,
-     "deep": true,
-     "layers": [],
-     "low": 100,
-     "mid": 91,
-     "high": 100
-    },
-    {
-     "top": 2751,
-     "deep": false,
-     "layers": [],
-     "low": 92,
-     "mid": 74,
-     "high": 76
-    },
-    {
-     "top": null,
-     "deep": false,
-     "layers": [
-      [
-       1142,
-       2747,
-       false
-      ]
-     ],
-     "low": 86,
-     "mid": 53,
-     "high": 59
-    },
-    {
-     "top": null,
-     "deep": false,
-     "layers": [
-      [
-       1212,
-       2789,
+       1350,
+       2641,
        false
       ]
      ],
      "low": 74,
-     "mid": 86,
-     "high": 100
-    },
-    {
-     "top": null,
-     "deep": false,
-     "layers": [
-      [
-       1258,
-       2956,
-       true
-      ]
-     ],
-     "low": 91,
-     "mid": 94,
-     "high": 82
-    },
-    {
-     "top": null,
-     "deep": false,
-     "layers": [
-      [
-       1264,
-       2958,
-       true
-      ]
-     ],
-     "low": 90,
-     "mid": 98,
-     "high": 52
-    },
-    {
-     "top": null,
-     "deep": false,
-     "layers": [
-      [
-       1217,
-       2962,
-       true
-      ]
-     ],
-     "low": 95,
-     "mid": 100,
+     "mid": 90,
      "high": 50
     },
     {
@@ -1021,32 +837,55 @@
      "deep": false,
      "layers": [
       [
-       1596,
-       2725,
+       1289,
+       2682,
        false
       ]
      ],
-     "low": 57,
-     "mid": 62,
-     "high": 4
+     "low": 89,
+     "mid": 92,
+     "high": 50
     },
     {
      "top": null,
      "deep": false,
      "layers": [
       [
-       1401,
-       1557,
-       false
-      ],
-      [
-       2089,
-       2510,
+       1269,
+       2595,
        false
       ]
      ],
-     "low": 40,
-     "mid": 44,
+     "low": 82,
+     "mid": 64,
+     "high": 50
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [
+      [
+       1394,
+       2482,
+       false
+      ]
+     ],
+     "low": 83,
+     "mid": 33,
+     "high": 6
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [
+      [
+       1269,
+       1551,
+       false
+      ]
+     ],
+     "low": 42,
+     "mid": 25,
      "high": 0
     },
     {
@@ -1054,13 +893,13 @@
      "deep": false,
      "layers": [
       [
-       1438,
-       1438,
+       1367,
+       1469,
        false
       ]
      ],
-     "low": 34,
-     "mid": 19,
+     "low": 42,
+     "mid": 18,
      "high": 0
     },
     {
@@ -1068,20 +907,12 @@
      "deep": false,
      "layers": [
       [
-       1398,
-       1457,
+       1346,
+       1460,
        false
       ]
      ],
-     "low": 40,
-     "mid": 8,
-     "high": 0
-    },
-    {
-     "top": null,
-     "deep": false,
-     "layers": [],
-     "low": 34,
+     "low": 50,
      "mid": 0,
      "high": 0
     },
@@ -1089,7 +920,87 @@
      "top": null,
      "deep": false,
      "layers": [],
-     "low": 34,
+     "low": 48,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 71,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": 1115,
+     "deep": false,
+     "layers": [],
+     "low": 66,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": 1465,
+     "deep": false,
+     "layers": [],
+     "low": 76,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 99,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 78,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 71,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 88,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 48,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 56,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 69,
      "mid": 0,
      "high": 0
     },
@@ -1105,7 +1016,15 @@
      "top": null,
      "deep": false,
      "layers": [],
-     "low": 94,
+     "low": 58,
+     "mid": 6,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 43,
      "mid": 0,
      "high": 0
     },
@@ -1113,7 +1032,347 @@
      "top": null,
      "deep": false,
      "layers": [],
-     "low": 70,
+     "low": 54,
+     "mid": 6,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 60,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 52,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 50,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 44,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 42,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 50,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 46,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 20,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 12,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 3,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 2,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 2,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 0,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 6,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 10,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 34,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 50,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 50,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 44,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 49,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 22,
+     "mid": 0,
+     "high": 0
+    }
+   ],
+   "gresivaudan": [
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 94,
+     "mid": 75,
+     "high": 86
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [
+      [
+       1200,
+       2721,
+       false
+      ]
+     ],
+     "low": 94,
+     "mid": 70,
+     "high": 50
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [
+      [
+       1186,
+       2540,
+       false
+      ]
+     ],
+     "low": 92,
+     "mid": 52,
+     "high": 50
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [
+      [
+       1343,
+       1758,
+       false
+      ]
+     ],
+     "low": 94,
+     "mid": 52,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 32,
+     "mid": 34,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 30,
+     "mid": 28,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 22,
+     "mid": 10,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 0,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 14,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": 984,
+     "deep": false,
+     "layers": [],
+     "low": 54,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": 1309,
+     "deep": false,
+     "layers": [],
+     "low": 93,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": 1163,
+     "deep": false,
+     "layers": [],
+     "low": 92,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": 1098,
+     "deep": false,
+     "layers": [],
+     "low": 90,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": 1221,
+     "deep": false,
+     "layers": [],
+     "low": 98,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": 1029,
+     "deep": false,
+     "layers": [],
+     "low": 94,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": 842,
+     "deep": false,
+     "layers": [],
+     "low": 93,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": 807,
+     "deep": false,
+     "layers": [],
+     "low": 88,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 87,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 74,
      "mid": 0,
      "high": 0
     },
@@ -1137,7 +1396,15 @@
      "top": null,
      "deep": false,
      "layers": [],
-     "low": 50,
+     "low": 32,
+     "mid": 12,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 2,
      "mid": 0,
      "high": 0
     },
@@ -1145,7 +1412,39 @@
      "top": null,
      "deep": false,
      "layers": [],
-     "low": 63,
+     "low": 0,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 0,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 0,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 0,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 20,
      "mid": 0,
      "high": 0
     },
@@ -1161,297 +1460,7 @@
      "top": null,
      "deep": false,
      "layers": [],
-     "low": 43,
-     "mid": 0,
-     "high": 0
-    },
-    {
-     "top": null,
-     "deep": false,
-     "layers": [],
-     "low": 42,
-     "mid": 0,
-     "high": 0
-    }
-   ],
-   "gresivaudan": [
-    {
-     "top": null,
-     "deep": false,
-     "layers": [],
-     "low": 46,
-     "mid": 84,
-     "high": 88
-    },
-    {
-     "top": null,
-     "deep": false,
-     "layers": [],
-     "low": 47,
-     "mid": 54,
-     "high": 100
-    },
-    {
-     "top": 2932,
-     "deep": true,
-     "layers": [],
-     "low": 92,
-     "mid": 90,
-     "high": 78
-    },
-    {
-     "top": 2935,
-     "deep": true,
-     "layers": [],
-     "low": 92,
-     "mid": 95,
-     "high": 96
-    },
-    {
-     "top": 718,
-     "deep": false,
-     "layers": [
-      [
-       1012,
-       2936,
-       true
-      ]
-     ],
-     "low": 93,
-     "mid": 100,
-     "high": 66
-    },
-    {
-     "top": 291,
-     "deep": false,
-     "layers": [
-      [
-       530,
-       2938,
-       true
-      ]
-     ],
-     "low": 92,
-     "mid": 98,
-     "high": 60
-    },
-    {
-     "top": 2939,
-     "deep": true,
-     "layers": [],
-     "low": 98,
-     "mid": 100,
-     "high": 95
-    },
-    {
-     "top": 2939,
-     "deep": true,
-     "layers": [],
-     "low": 98,
-     "mid": 100,
-     "high": 100
-    },
-    {
-     "top": 2940,
-     "deep": true,
-     "layers": [],
-     "low": 98,
-     "mid": 100,
-     "high": 100
-    },
-    {
-     "top": 2943,
-     "deep": true,
-     "layers": [],
-     "low": 95,
-     "mid": 90,
-     "high": 100
-    },
-    {
-     "top": 2945,
-     "deep": true,
-     "layers": [],
-     "low": 93,
-     "mid": 93,
-     "high": 100
-    },
-    {
-     "top": 2950,
-     "deep": true,
-     "layers": [],
-     "low": 89,
-     "mid": 93,
-     "high": 100
-    },
-    {
-     "top": 2950,
-     "deep": true,
-     "layers": [],
-     "low": 100,
-     "mid": 97,
-     "high": 94
-    },
-    {
-     "top": 2950,
-     "deep": true,
-     "layers": [],
-     "low": 99,
-     "mid": 98,
-     "high": 94
-    },
-    {
-     "top": 2914,
-     "deep": false,
-     "layers": [],
-     "low": 94,
-     "mid": 92,
-     "high": 82
-    },
-    {
-     "top": null,
-     "deep": false,
-     "layers": [],
-     "low": 92,
-     "mid": 90,
-     "high": 100
-    },
-    {
-     "top": 2956,
-     "deep": true,
-     "layers": [],
-     "low": 100,
-     "mid": 100,
-     "high": 78
-    },
-    {
-     "top": 2959,
-     "deep": true,
-     "layers": [],
-     "low": 90,
-     "mid": 92,
-     "high": 55
-    },
-    {
-     "top": 2962,
-     "deep": true,
-     "layers": [],
-     "low": 92,
-     "mid": 100,
-     "high": 50
-    },
-    {
-     "top": null,
-     "deep": false,
-     "layers": [
-      [
-       1204,
-       2553,
-       false
-      ]
-     ],
-     "low": 77,
-     "mid": 56,
-     "high": 0
-    },
-    {
-     "top": null,
-     "deep": false,
-     "layers": [
-      [
-       1344,
-       1575,
-       false
-      ]
-     ],
-     "low": 46,
-     "mid": 50,
-     "high": 0
-    },
-    {
-     "top": null,
-     "deep": false,
-     "layers": [],
-     "low": 36,
-     "mid": 35,
-     "high": 0
-    },
-    {
-     "top": null,
-     "deep": false,
-     "layers": [],
-     "low": 29,
-     "mid": 19,
-     "high": 0
-    },
-    {
-     "top": null,
-     "deep": false,
-     "layers": [],
-     "low": 30,
-     "mid": 0,
-     "high": 0
-    },
-    {
-     "top": null,
-     "deep": false,
-     "layers": [],
-     "low": 47,
-     "mid": 0,
-     "high": 0
-    },
-    {
-     "top": 1153,
-     "deep": false,
-     "layers": [],
-     "low": 92,
-     "mid": 0,
-     "high": 0
-    },
-    {
-     "top": 1142,
-     "deep": false,
-     "layers": [],
-     "low": 88,
-     "mid": 0,
-     "high": 0
-    },
-    {
-     "top": 1237,
-     "deep": false,
-     "layers": [],
-     "low": 90,
-     "mid": 0,
-     "high": 0
-    },
-    {
-     "top": 1220,
-     "deep": false,
-     "layers": [],
-     "low": 96,
-     "mid": 0,
-     "high": 0
-    },
-    {
-     "top": 995,
-     "deep": false,
-     "layers": [],
-     "low": 74,
-     "mid": 0,
-     "high": 0
-    },
-    {
-     "top": null,
-     "deep": false,
-     "layers": [],
-     "low": 56,
-     "mid": 0,
-     "high": 0
-    },
-    {
-     "top": null,
-     "deep": false,
-     "layers": [],
-     "low": 56,
+     "low": 50,
      "mid": 0,
      "high": 0
     },
@@ -1467,226 +1476,60 @@
      "top": null,
      "deep": false,
      "layers": [],
-     "low": 47,
+     "low": 50,
      "mid": 0,
      "high": 0
     },
     {
-     "top": null,
+     "top": 550,
      "deep": false,
      "layers": [],
-     "low": 46,
+     "low": 52,
      "mid": 0,
      "high": 0
-    }
-   ],
-   "trieves": [
+    },
     {
-     "top": 1982,
+     "top": 634,
      "deep": false,
      "layers": [],
-     "low": 98,
-     "mid": 98,
-     "high": 100
-    },
-    {
-     "top": 1635,
-     "deep": false,
-     "layers": [],
-     "low": 100,
-     "mid": 56,
-     "high": 100
-    },
-    {
-     "top": 1743,
-     "deep": false,
-     "layers": [],
-     "low": 100,
-     "mid": 43,
-     "high": 100
-    },
-    {
-     "top": 1686,
-     "deep": false,
-     "layers": [],
-     "low": 90,
-     "mid": 96,
-     "high": 100
-    },
-    {
-     "top": 2052,
-     "deep": false,
-     "layers": [],
-     "low": 92,
-     "mid": 100,
-     "high": 92
-    },
-    {
-     "top": 2281,
-     "deep": false,
-     "layers": [],
-     "low": 92,
-     "mid": 100,
-     "high": 75
-    },
-    {
-     "top": 2875,
-     "deep": false,
-     "layers": [],
-     "low": 82,
-     "mid": 100,
-     "high": 76
-    },
-    {
-     "top": 2633,
-     "deep": false,
-     "layers": [],
-     "low": 100,
-     "mid": 100,
-     "high": 100
-    },
-    {
-     "top": 2601,
-     "deep": false,
-     "layers": [],
-     "low": 100,
-     "mid": 100,
-     "high": 100
-    },
-    {
-     "top": 2551,
-     "deep": false,
-     "layers": [],
-     "low": 100,
-     "mid": 52,
-     "high": 92
-    },
-    {
-     "top": 1674,
-     "deep": false,
-     "layers": [
-      [
-       2160,
-       2485,
-       false
-      ]
-     ],
-     "low": 100,
-     "mid": 88,
-     "high": 72
-    },
-    {
-     "top": 1654,
-     "deep": false,
-     "layers": [
-      [
-       2329,
-       2420,
-       false
-      ]
-     ],
-     "low": 94,
-     "mid": 93,
-     "high": 98
-    },
-    {
-     "top": 1643,
-     "deep": false,
-     "layers": [],
-     "low": 92,
-     "mid": 83,
-     "high": 69
-    },
-    {
-     "top": 1484,
-     "deep": false,
-     "layers": [],
-     "low": 97,
-     "mid": 51,
-     "high": 100
-    },
-    {
-     "top": 1463,
-     "deep": false,
-     "layers": [],
-     "low": 96,
-     "mid": 38,
-     "high": 92
-    },
-    {
-     "top": 1412,
-     "deep": false,
-     "layers": [],
-     "low": 80,
+     "low": 52,
      "mid": 0,
-     "high": 68
+     "high": 0
     },
     {
-     "top": 1501,
+     "top": 641,
      "deep": false,
      "layers": [],
-     "low": 80,
-     "mid": 4,
-     "high": 100
-    },
-    {
-     "top": 1623,
-     "deep": false,
-     "layers": [],
-     "low": 90,
+     "low": 52,
      "mid": 0,
-     "high": 62
+     "high": 0
     },
     {
-     "top": 1652,
+     "top": 659,
+     "deep": false,
+     "layers": [],
+     "low": 60,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": 665,
+     "deep": false,
+     "layers": [],
+     "low": 84,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": 665,
      "deep": false,
      "layers": [],
      "low": 86,
      "mid": 0,
-     "high": 42
-    },
-    {
-     "top": 1491,
-     "deep": false,
-     "layers": [],
-     "low": 82,
-     "mid": 0,
-     "high": 48
-    },
-    {
-     "top": 1428,
-     "deep": false,
-     "layers": [],
-     "low": 79,
-     "mid": 0,
      "high": 0
     },
     {
-     "top": 1353,
-     "deep": false,
-     "layers": [],
-     "low": 80,
-     "mid": 0,
-     "high": 0
-    },
-    {
-     "top": 1443,
-     "deep": false,
-     "layers": [],
-     "low": 84,
-     "mid": 0,
-     "high": 0
-    },
-    {
-     "top": 1512,
-     "deep": false,
-     "layers": [],
-     "low": 84,
-     "mid": 0,
-     "high": 0
-    },
-    {
-     "top": 1539,
+     "top": 664,
      "deep": false,
      "layers": [],
      "low": 88,
@@ -1694,55 +1537,89 @@
      "high": 0
     },
     {
-     "top": 1529,
+     "top": 666,
      "deep": false,
      "layers": [],
-     "low": 92,
+     "low": 88,
      "mid": 0,
      "high": 0
     },
     {
-     "top": 1504,
+     "top": 666,
      "deep": false,
      "layers": [],
-     "low": 100,
+     "low": 87,
      "mid": 0,
      "high": 0
     },
     {
-     "top": 1504,
+     "top": 666,
      "deep": false,
      "layers": [],
-     "low": 91,
+     "low": 84,
      "mid": 0,
      "high": 0
     },
     {
-     "top": 1499,
+     "top": 635,
      "deep": false,
      "layers": [],
-     "low": 100,
+     "low": 65,
+     "mid": 0,
+     "high": 0
+    }
+   ],
+   "trieves": [
+    {
+     "top": 1516,
+     "deep": false,
+     "layers": [],
+     "low": 70,
+     "mid": 64,
+     "high": 92
+    },
+    {
+     "top": 1536,
+     "deep": false,
+     "layers": [],
+     "low": 76,
+     "mid": 0,
+     "high": 50
+    },
+    {
+     "top": 1560,
+     "deep": false,
+     "layers": [],
+     "low": 82,
+     "mid": 0,
+     "high": 36
+    },
+    {
+     "top": 1458,
+     "deep": false,
+     "layers": [],
+     "low": 78,
+     "mid": 0,
+     "high": 36
+    },
+    {
+     "top": 1093,
+     "deep": false,
+     "layers": [],
+     "low": 74,
      "mid": 0,
      "high": 0
     },
     {
-     "top": 1496,
+     "top": 1182,
      "deep": false,
      "layers": [],
-     "low": 100,
+     "low": 64,
      "mid": 0,
      "high": 0
     },
     {
-     "top": 1463,
-     "deep": false,
-     "layers": [],
-     "low": 99,
-     "mid": 0,
-     "high": 0
-    },
-    {
-     "top": 1352,
+     "top": 1153,
      "deep": false,
      "layers": [],
      "low": 76,
@@ -1750,26 +1627,290 @@
      "high": 0
     },
     {
-     "top": 1137,
+     "top": 1261,
      "deep": false,
      "layers": [],
-     "low": 57,
+     "low": 79,
      "mid": 0,
      "high": 0
     },
     {
-     "top": 1080,
+     "top": 1454,
      "deep": false,
      "layers": [],
-     "low": 58,
-     "mid": 8,
+     "low": 90,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": 1479,
+     "deep": false,
+     "layers": [],
+     "low": 94,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": 1520,
+     "deep": false,
+     "layers": [],
+     "low": 100,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": 1519,
+     "deep": false,
+     "layers": [],
+     "low": 100,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": 1520,
+     "deep": false,
+     "layers": [],
+     "low": 100,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": 1505,
+     "deep": false,
+     "layers": [],
+     "low": 100,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": 1450,
+     "deep": false,
+     "layers": [],
+     "low": 100,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": 1309,
+     "deep": false,
+     "layers": [],
+     "low": 100,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": 1337,
+     "deep": false,
+     "layers": [],
+     "low": 98,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": 1287,
+     "deep": false,
+     "layers": [],
+     "low": 94,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": 1086,
+     "deep": false,
+     "layers": [],
+     "low": 61,
+     "mid": 0,
      "high": 0
     },
     {
      "top": null,
      "deep": false,
      "layers": [],
-     "low": 62,
+     "low": 45,
+     "mid": 10,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 30,
+     "mid": 3,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 24,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 26,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 10,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 0,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 2,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 24,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 39,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 34,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 28,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 16,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 0,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 0,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 0,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 28,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 26,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 34,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 50,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 50,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 50,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 50,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 50,
+     "mid": 0,
+     "high": 0
+    },
+    {
+     "top": null,
+     "deep": false,
+     "layers": [],
+     "low": 50,
      "mid": 0,
      "high": 0
     }
